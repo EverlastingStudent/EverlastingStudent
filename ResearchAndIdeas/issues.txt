@@ -1,0 +1,5 @@
+-Модели 
+-Data Layer (Repository, Unit of Work, Migrations)
+-Ninject ??
+-AutoMapper
+-Изисквания (спецификация)
