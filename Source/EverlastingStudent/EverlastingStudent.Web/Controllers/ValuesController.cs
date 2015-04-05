@@ -1,15 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Net.Http;
-using System.Web.Http;
-
-namespace EverlastingStudent.Web.Controllers
+﻿namespace EverlastingStudent.Web.Controllers
 {
-    [Authorize]
+    using System.Collections.Generic;
+    using System.Web.Http;
+
+    using EverlastingStudent.Data;
+
     public class ValuesController : ApiController
     {
+        private IEverlastingStudentData data;
+        public ValuesController(IEverlastingStudentData data)
+        {
+            this.data = data;
+        }
         // GET api/values
         public IEnumerable<string> Get()
         {

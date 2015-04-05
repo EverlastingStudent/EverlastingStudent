@@ -49,6 +49,9 @@
     <Reference Include="Ninject.Web.Mvc">
       <HintPath>..\packages\Ninject.MVC5.3.2.1.0\lib\net45-full\Ninject.Web.Mvc.dll</HintPath>
     </Reference>
+    <Reference Include="Ninject.Web.WebApi">
+      <HintPath>..\packages\Ninject.Web.WebApi.3.2.4.0\lib\net45-full\Ninject.Web.WebApi.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
@@ -178,6 +181,8 @@
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\IdentityConfig.cs" />
+    <Compile Include="App_Start\NinjectResolver.cs" />
+    <Compile Include="App_Start\NinjectScope.cs" />
     <Compile Include="App_Start\NinjectWebCommon.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
@@ -290,6 +295,10 @@
     <None Include="Project_Readme.html" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\EverlastingStudent.Common\EverlastingStudent.Common.csproj">
+      <Project>{A1B0C8EC-98E1-4456-99C1-6805996E54D9}</Project>
+      <Name>EverlastingStudent.Common</Name>
+    </ProjectReference>
     <ProjectReference Include="..\EverlastingStudent.Data\EverlastingStudent.Data.csproj">
       <Project>{6C0CC27D-B00B-4911-8AC5-B5FADE1CE578}</Project>
       <Name>EverlastingStudent.Data</Name>
