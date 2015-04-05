@@ -2,7 +2,9 @@
 {
     using System.ComponentModel.DataAnnotations;
 
-    public class FreelanceProject
+    using EverlastingStudent.Common.Models;
+
+    public class FreelanceProject : DeletableEntity
     {
         [Key]
         public int Id { get; set; }

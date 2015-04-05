@@ -3,7 +3,9 @@
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
 
-    public class Course
+    using EverlastingStudent.Common.Models;
+
+    public class Course : DeletableEntity
     {
         private ICollection<StudentInCourses> studentInCourses;
 

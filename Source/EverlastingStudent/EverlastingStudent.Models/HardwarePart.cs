@@ -2,7 +2,9 @@
 {
     using System.ComponentModel.DataAnnotations;
 
-    public class HardwarePart
+    using EverlastingStudent.Common.Models;
+
+    public class HardwarePart : DeletableEntity
     {
         [Key]
         public int Id { get; set; }

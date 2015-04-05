@@ -4,7 +4,7 @@
 
     using EverlastingStudent.Common.Models;
 
-    public class Homework
+    public class Homework : DeletableEntity
     {
         [Key]
         public int Id { get; set; }

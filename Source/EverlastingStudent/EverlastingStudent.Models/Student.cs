@@ -5,12 +5,13 @@
     using System.Security.Claims;
     using System.Threading.Tasks;
 
+    using EverlastingStudent.Common.Contracts;
     using EverlastingStudent.Common.Models;
 
     using Microsoft.AspNet.Identity;
     using Microsoft.AspNet.Identity.EntityFramework;
 
-    public class Student : IdentityUser
+    public class Student : IdentityUser, IDeletableEntity
     {
         private ICollection<StudentHomework> studentHomeworks;
         private ICollection<StudentFreelanceProject> studentFreelanceProjects;
@@ -36,6 +37,10 @@
         public DateTime? LastAction { get; set; }
 
         public PlayerType PlayerType { get; set; }
+
+        public bool IsDeleted { get; set; }
+
+        public DateTime? DeletedOn { get; set; }
 
         public virtual ICollection<StudentHomework> StudentHomeworks
         {
