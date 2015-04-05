@@ -10,24 +10,27 @@
     {
         protected readonly IEverlastingStudentDbContext Context;
 
-        public GenericRepository(IEverlastingStudentDbContext votingSystemDbContext)
+        public GenericRepository(IEverlastingStudentDbContext context)
         {
-            this.Context = votingSystemDbContext;
+            this.Context = context;
+            this.DbSet = this.Context.Set<T>();
         }
 
-        public IQueryable<T> All()
+        protected IDbSet<T> DbSet { get; set; }
+
+        public virtual IQueryable<T> All()
         {
-            return this.Context.Set<T>();
+            return this.DbSet;
         }
 
-        public IQueryable<T> Search(Expression<Func<T, bool>> conditions)
+        public virtual IQueryable<T> Search(Expression<Func<T, bool>> conditions)
         {
             return this.All().Where(conditions);
         }
 
         public T GetById(object id)
         {
-            return this.Context.Set<T>().Find(id);
+            return this.DbSet.Find(id);
         }
 
         public void Add(T entity)
@@ -39,7 +42,7 @@
             }
             else
             {
-                this.Context.Set<T>().Add(entity);
+                this.DbSet.Add(entity);
             }
         }
 
@@ -48,13 +51,13 @@
             DbEntityEntry entry = this.Context.Entry(entity);
             if (entry.State == EntityState.Detached)
             {
-                this.Context.Set<T>().Attach(entity);
+                this.DbSet.Attach(entity);
             }
 
             entry.State = EntityState.Modified;
         }
 
-        public T Delete(T entity)
+        public virtual void Delete(T entity)
         {
             DbEntityEntry entry = this.Context.Entry(entity);
             if (entry.State != EntityState.Deleted)
@@ -63,13 +66,11 @@
             }
             else
             {
-                this.Context.Set<T>().Remove(entity);
+                this.DbSet.Remove(entity);
             }
-
-            return entity;
         }
 
-        public void DeleteById(object id)
+        public virtual void DeleteById(object id)
         {
             var entity = this.GetById(id);
 
