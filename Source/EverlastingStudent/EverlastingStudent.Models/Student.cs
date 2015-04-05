@@ -5,7 +5,7 @@
     using System.Security.Claims;
     using System.Threading.Tasks;
 
-    using EverlastingStudent.Common;
+    using EverlastingStudent.Common.Models;
 
     using Microsoft.AspNet.Identity;
     using Microsoft.AspNet.Identity.EntityFramework;
@@ -33,7 +33,7 @@
 
         public int Energy { get; set; }
 
-        public DateTime LastAction { get; set; }
+        public DateTime? LastAction { get; set; }
 
         public PlayerType PlayerType { get; set; }
 

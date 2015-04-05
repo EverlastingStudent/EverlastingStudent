@@ -1,7 +1,11 @@
 ﻿namespace EverlastingStudent.Models
 {
+    using System.ComponentModel.DataAnnotations;
+
     public class StudentFreelanceProject
     {
+        [Key]
+        public int Id { get; set; }
 
         public string StudentId { get; set; }
 

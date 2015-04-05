@@ -1,7 +1,12 @@
 ﻿namespace EverlastingStudent.Models
 {
+    using System.ComponentModel.DataAnnotations;
+
     public class StudentHomework
     {
+        [Key]
+        public int Id { get; set; }
+
         public string StudentId { get; set; }
 
         public virtual Student Student { get; set; }

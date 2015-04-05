@@ -24,7 +24,7 @@
         public int Value { get; set; }
 
         [Required]
-        public TypeOfDifficulty type { get; set; }
+        public TypeOfDifficulty Type { get; set; }
 
         public virtual ICollection<Homework> Homeworks
         {
