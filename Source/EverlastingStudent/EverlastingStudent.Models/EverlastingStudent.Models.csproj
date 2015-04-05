@@ -50,7 +50,6 @@
     <Compile Include="HardwarePart.cs" />
     <Compile Include="Student.cs" />
     <Compile Include="Course.cs" />
-    <Compile Include="Difficulty.cs" />
     <Compile Include="Exam.cs" />
     <Compile Include="FreelanceProject.cs" />
     <Compile Include="Homework.cs" />

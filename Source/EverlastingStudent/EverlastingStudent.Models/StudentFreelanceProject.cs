@@ -24,5 +24,7 @@
         public int SolveDurabationInMinutes { get; set; }
 
         public bool IsSolved { get; set; }
+
+        public long RequireExperience { get; set; }
     }
 }

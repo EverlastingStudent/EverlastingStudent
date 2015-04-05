@@ -14,14 +14,14 @@
     {
         private ICollection<StudentHomework> studentHomeworks;
         private ICollection<StudentFreelanceProject> studentFreelanceProjects;
-        private ICollection<Course> courses;
+        private ICollection<StudentInCourses> studentInCourses;
         private ICollection<HardwarePart> hardwareParts; 
 
         public Student()
         {
             this.studentHomeworks = new HashSet<StudentHomework>();
             this.studentFreelanceProjects = new HashSet<StudentFreelanceProject>();
-            this.courses = new HashSet<Course>();
+            this.studentInCourses = new HashSet<StudentInCourses>();
             this.hardwareParts = new HashSet<HardwarePart>();
         }
 
@@ -49,10 +49,10 @@
             set { this.studentFreelanceProjects = value; }
         }
 
-        public virtual ICollection<Course> Courses
+        public virtual ICollection<StudentInCourses> StudentInCourses
         {
-            get { return this.courses; }
-            set { this.courses = value; }
+            get { return this.studentInCourses; }
+            set { this.studentInCourses = value; }
         }
 
         public virtual ICollection<HardwarePart> HardwareParts

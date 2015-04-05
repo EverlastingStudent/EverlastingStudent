@@ -2,8 +2,9 @@
 {
     public enum TypeOfDifficulty
     {
-        Homeworks,
-        FreelanceProject
+        Easy,
+        Medium,
+        Hard
     }
 }
 
