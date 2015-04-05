@@ -2,7 +2,6 @@
 {
     using EverlastingStudent.Data;
     using EverlastingStudent.Models;
-    using EverlastingStudent.Web.Models;
 
     using Microsoft.AspNet.Identity;
     using Microsoft.AspNet.Identity.EntityFramework;

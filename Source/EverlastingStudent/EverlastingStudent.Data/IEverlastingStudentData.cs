@@ -23,10 +23,6 @@
 
         IGenericRepository<StudentHomework> StudentHomeworks { get; }
 
-        IGenericRepository<StudentInCourses> StudentInCourses { get; } 
-
-
-
-
+        IGenericRepository<StudentInCourses> StudentInCourses { get; }
     }
 }

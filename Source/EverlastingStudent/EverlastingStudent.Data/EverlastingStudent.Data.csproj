@@ -53,6 +53,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="EverlastingStudentData.cs" />
     <Compile Include="EverlastingStudentDbContext.cs" />
     <Compile Include="IEverlastingStudentData.cs" />
     <Compile Include="IEverlastingStudentDbContext.cs" />
