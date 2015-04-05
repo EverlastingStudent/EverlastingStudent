@@ -1,4 +1,4 @@
-﻿namespace EverlastingStudent.Common
+﻿namespace EverlastingStudent.Common.Models
 {
     public enum PlayerType
     {
