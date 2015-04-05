@@ -1,12 +1,44 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace EverlastingStudent.Data.Repositories
+﻿namespace EverlastingStudent.Data.Repositories
 {
-    interface DeletableEntityRepository
+    using System;
+    using System.Data.Entity;
+    using System.Linq;
+
+    using EverlastingStudent.Common.Contracts;
+    using EverlastingStudent.Data.Repositories.Contracts;
+
+    public class DeletableEntityRepository<T> : GenericRepository<T>, IDeletableEntityRepository<T>
+         where T : class, IDeletableEntity, new()
     {
+        public DeletableEntityRepository(DbContext context)
+            : base(context)
+        {
+        }
+
+        public override IQueryable<T> All()
+        {
+            return base.All().Where(x => !x.IsDeleted);
+        }
+
+        public IQueryable<T> AllWithDeleted()
+        {
+            return base.All();
+        }
+
+        public override void Delete(T entity)
+        {
+            entity.IsDeleted = true;
+            entity.DeletedOn = DateTime.Now;
+
+            this.Update(entity);
+        }
+
+        public override void DeleteById(object id)
+        {
+            var entity = this.GetById(id);
+
+            this.Delete(entity);
+        }
+
     }
 }

@@ -8,9 +8,9 @@
 
     public class GenericRepository<T> where T : class
     {
-        protected readonly IEverlastingStudentDbContext Context;
+        protected readonly DbContext Context;
 
-        public GenericRepository(IEverlastingStudentDbContext context)
+        public GenericRepository(DbContext context)
         {
             this.Context = context;
             this.DbSet = this.Context.Set<T>();
