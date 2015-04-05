@@ -13,6 +13,8 @@ using EverlastingStudent.Web.Models;
 
 namespace EverlastingStudent.Web.Providers
 {
+    using EverlastingStudent.Models;
+
     public class ApplicationOAuthProvider : OAuthAuthorizationServerProvider
     {
         private readonly string _publicClientId;
@@ -31,7 +33,7 @@ namespace EverlastingStudent.Web.Providers
         {
             var userManager = context.OwinContext.GetUserManager<ApplicationUserManager>();
 
-            ApplicationUser user = await userManager.FindAsync(context.UserName, context.Password);
+            Student user = await userManager.FindAsync(context.UserName, context.Password);
 
             if (user == null)
             {
