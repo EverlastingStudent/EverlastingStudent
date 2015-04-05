@@ -37,6 +37,7 @@
       <HintPath>..\packages\Microsoft.AspNet.Identity.EntityFramework.2.1.0\lib\net45\Microsoft.AspNet.Identity.EntityFramework.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -45,8 +46,24 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ApplicationUser.cs" />
+    <Compile Include="Drink.cs" />
+    <Compile Include="HardwarePart.cs" />
+    <Compile Include="Student.cs" />
+    <Compile Include="Course.cs" />
+    <Compile Include="Difficulty.cs" />
+    <Compile Include="Exam.cs" />
+    <Compile Include="FreelanceProject.cs" />
+    <Compile Include="Homework.cs" />
+    <Compile Include="StudentFreelanceProject.cs" />
+    <Compile Include="StudentHomeworks.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SpecializedCourse.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\EverlastingStudent.Common\EverlastingStudent.Common.csproj">
+      <Project>{A1B0C8EC-98E1-4456-99C1-6805996E54D9}</Project>
+      <Name>EverlastingStudent.Common</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
