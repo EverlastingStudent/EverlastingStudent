@@ -11,10 +11,6 @@
         [Required]
         public long RequireExpForExam { get; set; }
 
-        public bool IsPassed { get; set; }
-
-        public bool IsPassedWithExcellence { get; set; }
-
         public Course Course { get; set; }
 
         public int ExamDurationInHours { get; set; }

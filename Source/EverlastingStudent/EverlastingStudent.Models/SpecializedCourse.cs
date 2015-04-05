@@ -20,6 +20,8 @@
         public float? CoefficientExperienceGain { get; set; }
                     
         public float? CoefficientMoneyGain { get; set; }
+
+        public float? CoefficientMoneyLoss { get; set; }
                     
         public float? CoefficientEnergyLoss { get; set; }
 

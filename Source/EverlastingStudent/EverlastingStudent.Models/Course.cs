@@ -5,11 +5,11 @@
 
     public class Course
     {
-        private ICollection<Student> students;
+        private ICollection<StudentInCourses> studentInCourses;
 
         public Course()
         {
-            this.students = new HashSet<Student>();
+            this.studentInCourses = new HashSet<StudentInCourses>();
         }
 
         [Key]
@@ -18,16 +18,18 @@
         [Required]
         public string Title { get; set; }
 
-        public bool IsActive { get; set; }
+        public int NextCourceId { get; set; }
+
+        public Course NextCource { get; set; }
 
         public int ExamId { get; set; }
 
         public virtual Exam Exam { get; set; }
 
-        public virtual ICollection<Student> Students
+        public virtual ICollection<StudentInCourses> StudentInCourses
         {
-            get { return this.students; }
-            set { this.students = value; }
+            get { return this.studentInCourses; }
+            set { this.studentInCourses = value; }
         }
     }
 }

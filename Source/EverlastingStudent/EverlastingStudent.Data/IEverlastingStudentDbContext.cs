@@ -10,8 +10,6 @@
 
         IDbSet<Course> Courses { get; set; }
 
-        IDbSet<Difficulty> Difficulties { get; set; }
-
         IDbSet<Drink> Drinks { get; set; }
 
         IDbSet<Exam> Exams { get; set; }
