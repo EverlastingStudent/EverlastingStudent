@@ -1,5 +1,6 @@
 ﻿namespace EverlastingStudent.Web
 {
+    using EverlastingStudent.Data;
     using EverlastingStudent.Models;
     using EverlastingStudent.Web.Models;
 
@@ -19,7 +20,7 @@
 
         public static ApplicationUserManager Create(IdentityFactoryOptions<ApplicationUserManager> options, IOwinContext context)
         {
-            var manager = new ApplicationUserManager(new UserStore<Student>(context.Get<ApplicationDbContext>()));
+            var manager = new ApplicationUserManager(new UserStore<Student>(context.Get<EverlastingStudentDbContext>()));
             // Configure validation logic for usernames
             manager.UserValidator = new UserValidator<Student>(manager)
             {

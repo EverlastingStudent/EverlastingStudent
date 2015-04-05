@@ -204,7 +204,6 @@
     </Compile>
     <Compile Include="Models\AccountBindingModels.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
-    <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Providers\ApplicationOAuthProvider.cs" />
     <Compile Include="Results\ChallengeResult.cs" />
@@ -277,6 +276,10 @@
     <None Include="Project_Readme.html" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\EverlastingStudent.Data\EverlastingStudent.Data.csproj">
+      <Project>{6C0CC27D-B00B-4911-8AC5-B5FADE1CE578}</Project>
+      <Name>EverlastingStudent.Data</Name>
+    </ProjectReference>
     <ProjectReference Include="..\EverlastingStudent.Models\EverlastingStudent.Models.csproj">
       <Project>{E2C1ED2F-30D5-481C-AEE3-ADDD1F0929FC}</Project>
       <Name>EverlastingStudent.Models</Name>
