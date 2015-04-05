@@ -3,7 +3,7 @@
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
 
-    using EverlastingStudent.Common;
+    using EverlastingStudent.Common.Models;
 
     public class Difficulty
     {
