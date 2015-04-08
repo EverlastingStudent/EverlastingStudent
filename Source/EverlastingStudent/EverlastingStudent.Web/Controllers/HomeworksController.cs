@@ -1,13 +1,23 @@
 ﻿namespace EverlastingStudent.Web.Controllers
 {
+    using System;
+    using System.Collections.Generic;
     using System.Web.Mvc;
+
+    using EverlastingStudent.Data;
+    using EverlastingStudent.Web.Models;
 
     public class HomeworksController : BaseApiController
     {
-        // GET: Homeworks
-        public ActionResult Index()
+        public HomeworksController(IEverlastingStudentData data) : base(data)
         {
-            return View();
+        }
+
+        // GET: Homeworks
+        public IEnumerable<HomeworksDto> GetHomeworks(int type)
+        {
+
+            
         }
     }
 }

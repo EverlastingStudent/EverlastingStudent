@@ -36,6 +36,20 @@
 
         public DateTime? LastAction { get; set; }
 
+        public float CoefficientKnowledgeGain { get; set; }
+
+        public float CoefficientEnergyGain { get; set; }
+
+        public float CoefficientExperienceGain { get; set; }
+
+        public float CoefficientMoneyGain { get; set; }
+
+        public float CoefficientEnergyLoss { get; set; }
+
+        public float CoefficientMoneyLoss { get; set; }
+
+        public bool IsBusy { get; set; }
+
         public PlayerType PlayerType { get; set; }
 
         public bool IsDeleted { get; set; }
