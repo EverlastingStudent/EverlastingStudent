@@ -2,6 +2,7 @@
 {
     using EverlastingStudent.Data.Repositories.Contracts;
     using EverlastingStudent.Models;
+    using EverlastingStudent.Models.FreelanceProjects;
 
     public interface IEverlastingStudentData
     {
@@ -13,13 +14,13 @@
 
         IDeletableEntityRepository<FreelanceProject> FreelanceProjects { get; }
 
+        IDeletableEntityRepository<BaseFreelanceProject> BaseFreelanceProjects { get; }
+
         IDeletableEntityRepository<HardwarePart> HardwareParts { get; }
 
         IDeletableEntityRepository<Homework> Homeworks { get; }
 
         IGenericRepository<SpecializedCourse> SpecializedCourse { get; }
-
-        IGenericRepository<StudentFreelanceProject> StudentFreelanceProjects { get; }
 
         IGenericRepository<StudentHomework> StudentHomeworks { get; }
 

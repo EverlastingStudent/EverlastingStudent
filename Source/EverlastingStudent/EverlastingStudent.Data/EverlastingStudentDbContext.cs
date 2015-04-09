@@ -3,6 +3,7 @@
     using System.Data.Entity;
 
     using EverlastingStudent.Models;
+    using EverlastingStudent.Models.FreelanceProjects;
 
     using Microsoft.AspNet.Identity.EntityFramework;
 
@@ -11,7 +12,7 @@
         public EverlastingStudentDbContext()
             : base("EverlastingStudent", throwIfV1Schema: false)
         {
-            //Database.SetInitializer(new MigrateDatabaseToLatestVersion<EverlastingStudentDbContext, DefaultConfiguration>());
+             Database.SetInitializer(new MigrateDatabaseToLatestVersion<EverlastingStudentDbContext, Migrations.DefaultMigrationConfiguration>());
         }
 
         public IDbSet<Course> Courses { get; set; }
@@ -22,13 +23,13 @@
 
         public IDbSet<FreelanceProject> FreelanceProjects { get; set; }
 
+        public IDbSet<BaseFreelanceProject> BaseFreelanceProjects { get; set; }
+
         public IDbSet<HardwarePart> HardwareParts { get; set; }
 
         public IDbSet<Homework> Homeworks { get; set; }
 
         public IDbSet<SpecializedCourse> SpecializedCourses { get; set; }
-
-        public IDbSet<StudentFreelanceProject> StudentFreelanceProjects { get; set; }
 
         public IDbSet<StudentHomework> StudentHomeworks { get; set; }
 

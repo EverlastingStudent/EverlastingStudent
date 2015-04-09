@@ -17,7 +17,7 @@
         public IEnumerable<HomeworksDto> GetHomeworks(int type)
         {
 
-            
+            return null;
         }
     }
 }

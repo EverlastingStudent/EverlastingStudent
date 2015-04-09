@@ -1,9 +1,12 @@
 namespace EverlastingStudent.Data.Migrations
 {
+    using System;
     using System.Data.Entity.Migrations;
+    using System.Linq;
 
     using EverlastingStudent.Common.Models;
     using EverlastingStudent.Models;
+    using EverlastingStudent.Models.FreelanceProjects;
 
     internal sealed class DefaultMigrationConfiguration : DbMigrationsConfiguration<EverlastingStudentDbContext>
     {
@@ -15,7 +18,15 @@ namespace EverlastingStudent.Data.Migrations
 
         protected override void Seed(EverlastingStudentDbContext context)
         {
-            this.SeedHomeworks(context);
+            if (!context.Homeworks.Any())
+            {
+                this.SeedHomeworks(context);
+            }
+
+            if (!context.BaseFreelanceProjects.Any())
+            {
+                this.SeedBaseFreelanceProjects(context);
+            }
         }
 
         private void SeedHomeworks(EverlastingStudentDbContext context)
@@ -109,6 +120,59 @@ namespace EverlastingStudent.Data.Migrations
             {
                 Title = "High Quality code - SOLID",
                 Type = TypeOfDifficulty.Hard
+            });
+
+            context.SaveChanges();
+        }
+
+        private void SeedBaseFreelanceProjects(EverlastingStudentDbContext context)
+        {
+            context.BaseFreelanceProjects.Add(new BaseFreelanceProject()
+            {
+                Title = "Create new Office.",
+                Content = "Bla-bla-bla",
+                RequireExperience = 0,
+                EnergyCost = 10,
+                MoneyGain = 3,
+                ExperienceGain = 2,
+                SolveDurabationInHours = 6,
+                IsActive = true,
+                OpenForTakenDatetime = new DateTime(1999, 1, 1),
+                CloseForTakenDatetime = new DateTime(2020, 1, 1),
+                IsDeleted = false,
+                DeletedOn = null
+            });
+
+            context.BaseFreelanceProjects.Add(new BaseFreelanceProject()
+            {
+                Title = "Create new Autocad.",
+                Content = "Open Source",
+                RequireExperience = 0,
+                EnergyCost = 22,
+                MoneyGain = 33,
+                ExperienceGain = 5,
+                SolveDurabationInHours = 2,
+                IsActive = true,
+                OpenForTakenDatetime = new DateTime(2002, 3, 3),
+                CloseForTakenDatetime = new DateTime(2016, 2, 2),
+                IsDeleted = false,
+                DeletedOn = null
+            });
+
+            context.BaseFreelanceProjects.Add(new BaseFreelanceProject()
+            {
+                Title = "Create new Php version",
+                Content = "ahahhx",
+                RequireExperience = 999,
+                EnergyCost = 12,
+                MoneyGain = 323,
+                ExperienceGain = 65,
+                SolveDurabationInHours = 22,
+                IsActive = true,
+                OpenForTakenDatetime = new DateTime(2012, 7, 8),
+                CloseForTakenDatetime = new DateTime(2017, 2, 2),
+                IsDeleted = false,
+                DeletedOn = null
             });
 
             context.SaveChanges();

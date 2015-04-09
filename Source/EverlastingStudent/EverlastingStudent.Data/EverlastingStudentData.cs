@@ -7,6 +7,7 @@
     using EverlastingStudent.Data.Repositories;
     using EverlastingStudent.Data.Repositories.Contracts;
     using EverlastingStudent.Models;
+    using EverlastingStudent.Models.FreelanceProjects;
 
     public class EverlastingStudentData : IEverlastingStudentData
     {
@@ -38,6 +39,11 @@
             get { return this.GetDeletableEntityRepository<FreelanceProject>(); }
         }
 
+        public IDeletableEntityRepository<BaseFreelanceProject> BaseFreelanceProjects
+        {
+            get { return this.GetDeletableEntityRepository<BaseFreelanceProject>(); }
+        }
+
         public IDeletableEntityRepository<HardwarePart> HardwareParts
         {
             get { return this.GetDeletableEntityRepository<HardwarePart>(); }
@@ -51,11 +57,6 @@
         public IGenericRepository<SpecializedCourse> SpecializedCourse
         {
             get { return this.GetRepository<SpecializedCourse>(); }
-        }
-
-        public IGenericRepository<StudentFreelanceProject> StudentFreelanceProjects
-        {
-            get { return this.GetRepository<StudentFreelanceProject>(); }
         }
 
         public IGenericRepository<StudentHomework> StudentHomeworks

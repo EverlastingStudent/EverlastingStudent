@@ -4,6 +4,7 @@
     using System.Data.Entity.Infrastructure;
 
     using EverlastingStudent.Models;
+    using EverlastingStudent.Models.FreelanceProjects;
 
     public interface IEverlastingStudentDbContext
     {
@@ -16,13 +17,13 @@
 
         IDbSet<FreelanceProject> FreelanceProjects { get; set; }
 
+        IDbSet<BaseFreelanceProject> BaseFreelanceProjects { get; set; }
+
         IDbSet<HardwarePart> HardwareParts { get; set; }
 
         IDbSet<Homework> Homeworks { get; set; }
 
         IDbSet<SpecializedCourse> SpecializedCourses { get; set; }
-
-        IDbSet<StudentFreelanceProject> StudentFreelanceProjects { get; set; }
 
         IDbSet<StudentHomework> StudentHomeworks { get; set; }
 
