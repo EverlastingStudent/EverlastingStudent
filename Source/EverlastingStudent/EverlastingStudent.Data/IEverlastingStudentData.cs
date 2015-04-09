@@ -25,5 +25,7 @@
         IGenericRepository<StudentHomework> StudentHomeworks { get; }
 
         IGenericRepository<StudentInCourses> StudentInCourses { get; }
+
+        int SaveChanges();
     }
 }

@@ -69,6 +69,11 @@
             get { return this.GetRepository<StudentInCourses>(); }
         }
 
+        public int SaveChanges()
+        {
+            return this.context.SaveChanges();
+        }
+
         private IGenericRepository<T> GetRepository<T>() where T : class
         {
             if (!this.repositories.ContainsKey(typeof(T)))
