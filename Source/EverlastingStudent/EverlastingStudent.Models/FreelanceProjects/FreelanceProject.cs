@@ -32,5 +32,7 @@
         public DateTime? LastWorkingDateTime { get; set; }
 
         public float ProgressInPercentage { get; set; }
+
+        public float WorkPercentage { get; set; }
     }
 }
