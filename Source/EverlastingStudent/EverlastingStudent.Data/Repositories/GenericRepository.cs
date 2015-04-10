@@ -18,9 +18,14 @@
 
         protected IDbSet<T> DbSet { get; set; }
 
+        public IQueryable<T> OfType<T>(IQueryable source)
+        {
+            return source.OfType<T>();
+        }
+
         public virtual IQueryable<T> All()
         {
-            return this.DbSet;
+            return this.DbSet.OfType<T>();
         }
 
         public virtual IQueryable<T> Search(Expression<Func<T, bool>> conditions)
@@ -79,6 +84,8 @@
                 this.Delete(entity);
             }
         }
+
+
 
         public void SaveChanges()
         {

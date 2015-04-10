@@ -24,8 +24,24 @@
         {
             var currentUserId = User.Identity.GetUserId();
             var student = this.data.Students.All().FirstOrDefault(x => x.Id == currentUserId);
+            if (student.LastFreelanceProjectSearchDateTime != null && (DateTime.Now - (DateTime)student.LastFreelanceProjectSearchDateTime).Hours < 24)
+            {
+                this.BadRequest(
+                    "You can search once for 24 hours. Next search will be available after: " +
+                    string.Format("{0:hh\\:mm\\:ss}", DateTime.Now - (DateTime)student.LastFreelanceProjectSearchDateTime));
+            }
+
             var studentBaseProject = student.FreelanceProjects.Select(y => y.BaseFreelanceProjectId);
-            return this.Ok(this.data.BaseFreelanceProjects.Search(x => x.IsActive && studentBaseProject.All(z => z != x.Id)).ToList());
+            var rnd = new Random();
+            int returnedRandomProjects = rnd.Next(1, student.Level + 1);
+
+            return this.Ok(
+                this.data.BaseFreelanceProjects
+                .All()
+                .Where(x => !(x is FreelanceProject) && x.IsActive && studentBaseProject.All(z => z != x.Id))
+                .Take(returnedRandomProjects)
+                .OrderByDescending(x => x.CloseForTakenDatetime)
+                .ToList()); 
 
             //.Select(x => new
             //{
@@ -143,6 +159,11 @@
             {
                 return this.BadRequest("No such project found.");
             }
+
+            //if (!(project is FreelanceProject))
+            //{
+            //    return this.BadRequest("No such project found.");
+            //}
 
             try
             {

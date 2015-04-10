@@ -1,4 +1,6 @@
-﻿namespace EverlastingStudent.Models.FreelanceProjects
+﻿using System.Linq;
+
+namespace EverlastingStudent.Models.FreelanceProjects
 {
     using System;
     using System.ComponentModel.DataAnnotations;

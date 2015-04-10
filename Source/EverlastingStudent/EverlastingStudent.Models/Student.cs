@@ -19,6 +19,9 @@
         private ICollection<StudentInCourses> studentInCourses;
         private ICollection<HardwarePart> hardwareParts;
 
+        private int level;
+        private long experience;
+
         public Student()
         {
             this.studentHomeworks = new HashSet<StudentHomework>();
@@ -27,7 +30,33 @@
             this.hardwareParts = new HashSet<HardwarePart>();
         }
 
-        public long Experience { get; set; }
+        public long Experience
+        {
+            get
+            {
+                return this.experience;
+            }
+
+            set
+            {
+                this.experience = value;
+                if (this.experience < 0)
+                {
+                    this.Level = 0;
+                }
+                else
+                {
+                    // exp = 10 -> 1 level, exp = 40-> 2 level, exp = 90-> 3level ...
+                    this.Level = (int)Math.Sqrt(this.experience / 10.0);
+                }
+            }
+        }
+
+        public int Level
+        {
+            get { return this.level; }
+            private set { this.level = value; }
+        }
 
         public long Knowledge { get; set; }
 
@@ -52,6 +81,8 @@
         public bool IsBusy { get; set; }
 
         public PlayerType PlayerType { get; set; }
+
+        public DateTime? LastFreelanceProjectSearchDateTime { get; set; }
 
         public bool IsDeleted { get; set; }
 
