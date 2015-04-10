@@ -13,9 +13,9 @@
 
         public int EnergyCost { get; set; }
 
-        public int KnowledgeGain { get; set; }
+        public double KnowledgeGain { get; set; }
 
-        public int ExperienceGain { get; set; }
+        public double ExperienceGain { get; set; }
 
         public int SolveDurabationInMinutes { get; set; }
 

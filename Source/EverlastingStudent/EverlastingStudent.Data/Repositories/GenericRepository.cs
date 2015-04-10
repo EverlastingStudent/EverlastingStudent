@@ -6,7 +6,9 @@
     using System.Linq;
     using System.Linq.Expressions;
 
-    public class GenericRepository<T> where T : class
+    using EverlastingStudent.Data.Repositories.Contracts;
+
+    public class GenericRepository<T> : IGenericRepository<T> where T : class
     {
         protected readonly DbContext Context;
 

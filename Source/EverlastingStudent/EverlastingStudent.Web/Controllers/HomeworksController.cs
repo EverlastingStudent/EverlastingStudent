@@ -26,7 +26,7 @@
 
         // GET: Homeworks
         [HttpGet]
-        public IEnumerable<HomeworksDto> GetHomeworks()
+        public IHttpActionResult GetHomeworks()
         {
             var easyHomework = this.Data.Homeworks
                                 .All()
@@ -57,9 +57,10 @@
                 .OrderByDescending(x => x.CreatedOn)
                 .Take(3)
                 .Project()
-                .To<GetHomeworksDto>();
+                .To<GetHomeworksDto>()
+                .ToList();
 
-            return null;
+            return this.Ok(easyHomeworkDto);
         }
 
         private void CalculateStats(Homework homework)

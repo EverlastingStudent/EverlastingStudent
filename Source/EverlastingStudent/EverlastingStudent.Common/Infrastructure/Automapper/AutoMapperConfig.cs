@@ -9,16 +9,16 @@
 
     public class AutoMapperConfig
     {
-        private readonly Assembly assembly;
+        private readonly IEnumerable<Assembly> assemblies;
 
-        public AutoMapperConfig(Assembly assembly)
+        public AutoMapperConfig(IEnumerable<Assembly> assemblies)
         {
-            this.assembly = assembly;
+            this.assemblies = assemblies;
         }
 
         public void Execute()
         {
-            var types = this.assembly.GetExportedTypes();
+            var types = this.assemblies.SelectMany(a => a.GetExportedTypes()).ToList();
 
             LoadStandardMappings(types);
 

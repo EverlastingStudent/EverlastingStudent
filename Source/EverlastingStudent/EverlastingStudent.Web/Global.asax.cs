@@ -19,7 +19,12 @@
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
 
-            var autoMapperConfig = new AutoMapperConfig(Assembly.GetExecutingAssembly());
+            var autoMapperConfig = new AutoMapperConfig(
+                new[]
+                {
+                    Assembly.GetExecutingAssembly(),
+                    Assembly.Load("EverlastingStudent.DataTransferObjects")
+                });
             autoMapperConfig.Execute();
         }
     }
