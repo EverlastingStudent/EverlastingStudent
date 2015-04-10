@@ -19,7 +19,6 @@
         private ICollection<StudentInCourses> studentInCourses;
         private ICollection<HardwarePart> hardwareParts;
 
-        private int level;
         private long experience;
 
         public Student()
@@ -52,11 +51,7 @@
             }
         }
 
-        public int Level
-        {
-            get { return this.level; }
-            private set { this.level = value; }
-        }
+        public int Level { get; private set; }
 
         public long Knowledge { get; set; }
 
