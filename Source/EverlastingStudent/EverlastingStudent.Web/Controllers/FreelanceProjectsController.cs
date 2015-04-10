@@ -1,8 +1,10 @@
 ﻿namespace EverlastingStudent.Web.Controllers
 {
+    using System;
     using System.Linq;
     using System.Web.Http;
     using EverlastingStudent.Data;
+    using EverlastingStudent.Models.FreelanceProjects;
     using Microsoft.AspNet.Identity;
 
     public class FreelanceProjectsController : BaseApiController
@@ -15,66 +17,179 @@
             this.data = data;
         }
 
+        [Authorize]
         [HttpGet]
-        [ActionName("all")]
-        public IHttpActionResult GetAllProjects()
+        [ActionName("allActive")]
+        public IHttpActionResult GetAllActiveProjects()
         {
-            return this.Ok(this.data.FreelanceProjects.All().Where(x => x.IsActive));
+            var currentUserId = User.Identity.GetUserId();
+            var student = this.data.Students.All().FirstOrDefault(x => x.Id == currentUserId);
+            var studentBaseProject = student.FreelanceProjects.Select(y => y.BaseFreelanceProjectId);
+            return this.Ok(this.data.BaseFreelanceProjects.Search(x => x.IsActive && studentBaseProject.All(z => z != x.Id)).ToList());
+
+            //.Select(x => new
+            //{
+            //    x.Id,
+            //    x.IsActive,
+            //    x.Title,
+            //    x.Content,
+            //    x.EnergyCost,
+            //    x.RequireExperience,
+            //    x.ExperienceGain,
+            //    x.MoneyGain,
+            //    x.OpenForTakenDatetime,
+            //    x.SolveDurabationInHours,
+            //    x.CloseForTakenDatetime,
+            //})
         }
 
+        [Authorize]
         [HttpGet]
         [ActionName("myProjects")]
-        public IHttpActionResult GetUsersProjects(object studentId)
+        public IHttpActionResult GetUsersProjects()
         {
-            var student = this.data.Students.GetById(studentId);
-            return this.Ok(this.data.FreelanceProjects.All().Where(x => x.StudentId.Equals(studentId)));
+            var currentUserId = User.Identity.GetUserId();
+            var student = this.data.Students.All().FirstOrDefault(x => x.Id == currentUserId);
+
+            return this.Ok(student.FreelanceProjects.ToList());
+            //.Select(x => new
+            //{
+            //    x.Id,
+            //    x.StartDateTime,
+            //    x.StudentId,
+            //    x.IsSolved,
+            //    x.ProgressInPercentage,
+            //    x.BaseFreelanceProject,
+            //    x.BaseFreelanceProjectId,
+            //})
         }
 
         [Authorize]
         [HttpPost]
         [ActionName("take")]
-        public IHttpActionResult TakeProject(int projectId)
+        public IHttpActionResult TakeProject(int id)
         {
             var currentUserId = User.Identity.GetUserId();
             var student = this.data.Students.All().FirstOrDefault(x => x.Id == currentUserId);
 
-            // var student = this.data.Students.GetById(studentId);
             if (student == null)
             {
                 return this.BadRequest("No such student");
             }
 
-            var project = this.data.BaseFreelanceProjects.GetById(projectId);
+            var project = this.data.BaseFreelanceProjects.GetById(id);
             if (project == null)
             {
                 return this.BadRequest("No such project");
             }
-            
-            student.TakeFreelanceProject(project);
-            this.data.SaveChanges();
 
-            return this.Ok();
+            if (project.GetType() != typeof(BaseFreelanceProject))
+            {
+                return this.BadRequest("You cannot choose this type of project!");
+            }
+
+            try
+            {
+                if (!project.IsActive)
+                {
+                    throw new InvalidOperationException("Project is not active.");
+                }
+
+                if (student.FreelanceProjects.Any(x => x.BaseFreelanceProjectId == project.Id))
+                {
+                    throw new InvalidOperationException("You are working on this project.");
+                }
+
+                if (student.Experience < project.RequireExperience)
+                {
+                    throw new InvalidOperationException("Not enough experience.");
+                }
+
+                var newFreelanceProject = new FreelanceProject();
+                student.FreelanceProjects.Add(newFreelanceProject);
+
+                // Copy properties to newFrelanceProject
+                this.data.Context.Entry(newFreelanceProject).CurrentValues.SetValues(project);
+
+                newFreelanceProject.BaseFreelanceProject = project;
+                newFreelanceProject.IsActive = true;
+                newFreelanceProject.StartDateTime = DateTime.Now;
+                newFreelanceProject.ProgressInPercentage = 0f;
+
+                this.data.SaveChanges();
+                return this.Ok();
+            }
+            catch (Exception e)
+            {
+                return this.BadRequest(e.Message);
+            }
         }
 
+        [Authorize]
         [HttpPost]
         [ActionName("work")]
-        public IHttpActionResult WorkOnProject(object studentId, object projectId)
+        public IHttpActionResult WorkOnProject(object id)
         {
-            var student = this.data.Students.GetById(studentId);
+            var currentUserId = User.Identity.GetUserId();
+            var student = this.data.Students.All().FirstOrDefault(x => x.Id == currentUserId);
+
             if (student == null)
             {
                 return this.BadRequest("No such student found.");
             }
 
-            var project = this.data.FreelanceProjects.GetById(projectId);
+            var project = this.data.FreelanceProjects.GetById(id);
             if (project == null)
             {
                 return this.BadRequest("No such project found.");
             }
 
-            project.Do();
+            try
+            {
+                if (student.FreelanceProjects.All(x => x.Id != project.Id))
+                {
+                    throw new InvalidOperationException("You have to add project to work on it.");
+                }
 
-            return this.Ok(project);
+                if (project.IsDeleted)
+                {
+                    throw new NullReferenceException("Can't work on deleted project.");
+                }
+
+                if (project.IsSolved)
+                {
+                    throw new InvalidOperationException("Project is done.");
+                }
+
+                if (project.CloseForTakenDatetime <= DateTime.Now)
+                {
+                    throw new InvalidOperationException("Project is no longer active.");
+                }
+
+                if (project.OpenForTakenDatetime > DateTime.Now)
+                {
+                    throw new InvalidOperationException("Project is not active yet.");
+                }
+
+                if (student.Experience < project.RequireExperience)
+                {
+                    throw new InvalidOperationException("Not enough experience.");
+                }
+
+                if (student.Energy < project.EnergyCost)
+                {
+                    throw new InvalidOperationException("Not enough energy.");
+                }
+
+
+                // TODO: take user energy and gain poject progress
+                // TODO: check all active projects for passed deadline
+                return this.Ok(project);
+            }
+            catch (Exception e)
+            {
+                return this.BadRequest(e.Message);
+            }
         }
     }
 }

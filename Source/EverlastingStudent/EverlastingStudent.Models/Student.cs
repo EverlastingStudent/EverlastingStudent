@@ -89,40 +89,5 @@
             // Add custom user claims here
             return userIdentity;
         }
-
-        public bool TakeFreelanceProject(BaseFreelanceProject baseFreelanceProject)
-        {
-            if (!baseFreelanceProject.IsActive)
-            {
-                throw new InvalidOperationException("Project is not active.");
-            }
-
-            if (this.FreelanceProjects.Any(x => x.BaseFreelanceProjectId == baseFreelanceProject.Id))
-            {
-                throw new InvalidOperationException("You are working on this project.");
-            }
-
-            if (this.Experience < baseFreelanceProject.RequireExperience)
-            {
-                throw new InvalidOperationException("Not enough experience.");
-            }
-
-            // Copy properties to newFrelanceProject
-            var newFreelanceProject = FreelanceProject.CopyToFreelanceProject(baseFreelanceProject);
-
-            if (newFreelanceProject != null)
-            {
-                newFreelanceProject.BaseFreelanceProject = baseFreelanceProject;
-                newFreelanceProject.IsActive = true;
-                newFreelanceProject.ActivatedDateTime = DateTime.Now;
-                newFreelanceProject.ProgressInPercentage = 0f;
-                this.FreelanceProjects.Add(newFreelanceProject);
-                return true;
-            }
-            else
-            {
-                return false;
-            }
-        }
     }
 }
