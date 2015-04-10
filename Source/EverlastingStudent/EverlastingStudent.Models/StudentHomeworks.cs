@@ -1,5 +1,6 @@
 ﻿namespace EverlastingStudent.Models
 {
+    using System;
     using System.ComponentModel.DataAnnotations;
 
     public class StudentHomework
@@ -18,12 +19,14 @@
 
         public int EnergyCost { get; set; }
 
-        public int KnowledgeGain { get; set; }
+        public double KnowledgeGain { get; set; }
 
-        public int ExperienceGain { get; set; }
+        public double ExperienceGain { get; set; }
 
         public int SolveDurabationInMinutes { get; set; }
 
         public bool IsSolved { get; set; }
+
+        public DateTime CreatedOn { get; set; }
     }
 }

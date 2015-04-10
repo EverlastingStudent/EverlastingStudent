@@ -39,6 +39,12 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="AutoMapper">
+      <HintPath>..\packages\AutoMapper.3.3.1\lib\net40\AutoMapper.dll</HintPath>
+    </Reference>
+    <Reference Include="AutoMapper.Net4">
+      <HintPath>..\packages\AutoMapper.3.3.1\lib\net40\AutoMapper.Net4.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="Ninject">
       <HintPath>..\packages\Ninject.3.2.0.0\lib\net45-full\Ninject.dll</HintPath>
@@ -305,6 +311,10 @@
       <Project>{A1B0C8EC-98E1-4456-99C1-6805996E54D9}</Project>
       <Name>EverlastingStudent.Common</Name>
     </ProjectReference>
+    <ProjectReference Include="..\EverlastingStudent.DataTransferObjects\EverlastingStudent.DataTransferObjects.csproj">
+      <Project>{8BB0D70C-1D6A-4586-AA81-A1C15A89F594}</Project>
+      <Name>EverlastingStudent.DataTransferObjects</Name>
+    </ProjectReference>
     <ProjectReference Include="..\EverlastingStudent.Data\EverlastingStudent.Data.csproj">
       <Project>{6C0CC27D-B00B-4911-8AC5-B5FADE1CE578}</Project>
       <Name>EverlastingStudent.Data</Name>
@@ -342,6 +352,7 @@
       </FlavorProperties>
     </VisualStudio>
   </ProjectExtensions>
+  <Import Project="..\packages\AutoMapper.3.3.1\tools\AutoMapper.targets" Condition="Exists('..\packages\AutoMapper.3.3.1\tools\AutoMapper.targets')" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

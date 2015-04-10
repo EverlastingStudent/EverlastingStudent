@@ -9,6 +9,7 @@ namespace EverlastingStudent.Web
     using System.Web;
     using System.Web.Http;
 
+    using EverlastingStudent.Common.Infrastructure;
     using EverlastingStudent.Data;
 
     using Microsoft.Web.Infrastructure.DynamicModuleHelper;
@@ -68,7 +69,8 @@ namespace EverlastingStudent.Web
         private static void RegisterServices(IKernel kernel)
         {
             kernel.Bind<IEverlastingStudentDbContext>().To<EverlastingStudentDbContext>();
-            kernel.Bind<IEverlastingStudentData>().To<EverlastingStudentData>(); 
+            kernel.Bind<IEverlastingStudentData>().To<EverlastingStudentData>();
+            kernel.Bind<IUserProvider>().To<AspNetUserProvider>();
         }        
     }
 }

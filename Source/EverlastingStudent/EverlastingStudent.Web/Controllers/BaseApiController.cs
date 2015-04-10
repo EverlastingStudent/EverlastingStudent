@@ -7,6 +7,7 @@
     using System.Web.Http.Controllers;
     using System.Web.Http.Results;
 
+    using EverlastingStudent.Common.Infrastructure;
     using EverlastingStudent.Data;
     using EverlastingStudent.Models;
 
@@ -14,10 +15,10 @@
 
     public class BaseApiController : ApiController
     {
-        public BaseApiController(IEverlastingStudentData data)
+        public BaseApiController(IEverlastingStudentData data, IUserProvider userProvider)
         {
             this.Data = data;
-            this.UserProfile = this.Data.Students.GetById(this.User.Identity.GetUserId());
+            this.UserProfile = this.Data.Students.GetById(userProvider.GetUserId());
         }
 
         protected IEverlastingStudentData Data { get; set; }

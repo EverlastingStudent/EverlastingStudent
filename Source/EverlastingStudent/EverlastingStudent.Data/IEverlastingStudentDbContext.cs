@@ -8,7 +8,6 @@
 
     public interface IEverlastingStudentDbContext
     {
-
         IDbSet<Course> Courses { get; set; }
 
         IDbSet<Drink> Drinks { get; set; }

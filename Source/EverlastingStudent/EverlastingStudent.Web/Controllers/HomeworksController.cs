@@ -2,22 +2,94 @@
 {
     using System;
     using System.Collections.Generic;
-    using System.Web.Mvc;
+    using System.Data.Entity.SqlServer;
+    using System.Linq;
+    using System.Web.Http;
 
+    using AutoMapper.QueryableExtensions;
+
+    using EverlastingStudent.Common.Infrastructure;
+    using EverlastingStudent.Common.Models;
     using EverlastingStudent.Data;
+    using EverlastingStudent.DataTransferObjects;
+    using EverlastingStudent.Models;
     using EverlastingStudent.Web.Models;
+
+    using Microsoft.AspNet.Identity;
 
     public class HomeworksController : BaseApiController
     {
-        public HomeworksController(IEverlastingStudentData data) : base(data)
+        public HomeworksController(IEverlastingStudentData data, IUserProvider userProvider)
+            : base(data, userProvider)
         {
         }
 
         // GET: Homeworks
-        public IEnumerable<HomeworksDto> GetHomeworks(int type)
+        [HttpGet]
+        public IEnumerable<HomeworksDto> GetHomeworks()
         {
+            var easyHomework = this.Data.Homeworks
+                                .All()
+                                .Where(x => x.Type == TypeOfDifficulty.Easy)
+                                .OrderBy(x => SqlFunctions.Rand())
+                               .FirstOrDefault();
+
+            var mediumHomework = this.Data.Homeworks
+                               .All()
+                               .Where(x => x.Type == TypeOfDifficulty.Medium)
+                               .OrderBy(x => SqlFunctions.Rand())
+                               .FirstOrDefault();
+
+            var hardHomework = this.Data.Homeworks
+                               .All()
+                               .Where(x => x.Type == TypeOfDifficulty.Hard)
+                               .OrderBy(x => SqlFunctions.Rand())
+                               .FirstOrDefault();
+
+            this.CalculateStats(easyHomework);
+            this.CalculateStats(mediumHomework);
+            this.CalculateStats(hardHomework);
+
+            this.Data.SaveChanges();
+
+            var easyHomeworkDto = this.Data.StudentHomeworks
+                .All()
+                .OrderByDescending(x => x.CreatedOn)
+                .Take(3)
+                .Project()
+                .To<GetHomeworksDto>();
 
             return null;
+        }
+
+        private void CalculateStats(Homework homework)
+        {
+            var homeworkKnowledgeGain = this.UserProfile.Knowledge * 0.01;
+            var homeworkExperienceGain = this.UserProfile.Experience * 0.01;
+            var chanceToSolve = 0.0f;
+            const int energyCost = 30; // add constant
+
+            if (homework.Type == TypeOfDifficulty.Easy)
+            {
+                chanceToSolve = 0.90f;
+            }
+            else
+            {
+                chanceToSolve = homework.Type == TypeOfDifficulty.Medium ? 0.70f : 0.40f;
+            }
+
+            var studentHomework = new StudentHomework
+            {
+                StudentId = this.UserProfile.Id,
+                Homework = homework,
+                EnergyCost = energyCost,
+                ExperienceGain = homeworkExperienceGain,
+                KnowledgeGain = homeworkKnowledgeGain,
+                SolveDurabationInMinutes = 10,
+                CreatedOn = DateTime.Now
+            };
+
+            this.Data.StudentHomeworks.Add(studentHomework);
         }
     }
 }

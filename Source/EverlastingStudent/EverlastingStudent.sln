@@ -17,6 +17,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Web", "Web", "{807DC3AA-FF4
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EverlastingStudent.Data", "EverlastingStudent.Data\EverlastingStudent.Data.csproj", "{6C0CC27D-B00B-4911-8AC5-B5FADE1CE578}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EverlastingStudent.DataTransferObjects", "EverlastingStudent.DataTransferObjects\EverlastingStudent.DataTransferObjects.csproj", "{8BB0D70C-1D6A-4586-AA81-A1C15A89F594}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,6 +41,10 @@ Global
 		{6C0CC27D-B00B-4911-8AC5-B5FADE1CE578}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6C0CC27D-B00B-4911-8AC5-B5FADE1CE578}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6C0CC27D-B00B-4911-8AC5-B5FADE1CE578}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8BB0D70C-1D6A-4586-AA81-A1C15A89F594}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8BB0D70C-1D6A-4586-AA81-A1C15A89F594}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8BB0D70C-1D6A-4586-AA81-A1C15A89F594}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8BB0D70C-1D6A-4586-AA81-A1C15A89F594}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -48,5 +54,6 @@ Global
 		{7D0684BB-E947-4032-9269-94351CACF5F2} = {807DC3AA-FF41-4CF7-B683-07913938A8E2}
 		{A1B0C8EC-98E1-4456-99C1-6805996E54D9} = {BA954D2C-116E-4D45-ABD8-EEA0F1BC5A83}
 		{6C0CC27D-B00B-4911-8AC5-B5FADE1CE578} = {B27AC014-0020-4CC1-91FE-18B35E3FC651}
+		{8BB0D70C-1D6A-4586-AA81-A1C15A89F594} = {807DC3AA-FF41-4CF7-B683-07913938A8E2}
 	EndGlobalSection
 EndGlobal
