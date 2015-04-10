@@ -127,7 +127,7 @@
                 newFreelanceProject.ProgressInPercentage = 0f;
 
                 this.Data.SaveChanges();
-                return this.Ok();
+                return this.Ok(project);
             }
             catch (Exception e)
             {
@@ -138,14 +138,14 @@
         [Authorize]
         [HttpPost]
         [ActionName("work")]
-        public IHttpActionResult WorkOnProject(object id)
+        public IHttpActionResult WorkOnProject(int id)
         {
             if (this.UserProfile == null)
             {
                 return this.BadRequest("No such student found.");
             }
 
-            var project = this.Data.FreelanceProjects.GetById(id);
+            var project = this.UserProfile.FreelanceProjects.FirstOrDefault(x => x.Id.Equals(id));
             if (project == null)
             {
                 return this.BadRequest("No such project found.");
@@ -188,10 +188,7 @@
                     throw new InvalidOperationException("Not enough experience.");
                 }
 
-                if (this.UserProfile.Energy < project.EnergyCost)
-                {
-                    throw new InvalidOperationException("Not enough energy.");
-                }
+
 
                 var waitInRealMinutes = 5;
                 if (project.LastWorkingDateTime != null && (DateTime.Now - (DateTime)project.LastWorkingDateTime).Minutes < waitInRealMinutes)
@@ -203,7 +200,8 @@
 
                 // TODO: take user energy and gain poject progress
 
-                this.UserProfile.Energy -= project.EnergyCost;
+                this.WorkLogic(project);
+                project.LastWorkingDateTime = DateTime.Now;
 
                 // TODO: check all active projects for passed deadline
                 var allProjectsOverDeadline = this.UserProfile.FreelanceProjects
@@ -218,11 +216,60 @@
                     freelanceProject.IsActive = false;
                 }
 
+                this.Data.SaveChanges();
                 return this.Ok(project);
             }
             catch (Exception e)
             {
                 return this.BadRequest(e.Message);
+            }
+        }
+
+        private void WorkLogic(FreelanceProject project)
+        {
+            double expRatio;
+            if (project.RequireExperience == 0)
+            {
+                expRatio = this.UserProfile.Experience;
+            }
+            else
+            {
+                expRatio = ((double)this.UserProfile.Experience) / project.RequireExperience;
+            }
+
+            if (expRatio <= 1.1f)
+            {
+                project.WorkPercentage = 20f;
+            }
+            else if (expRatio <= 2f)
+            {
+                project.WorkPercentage = 25f;
+            }
+            else if (expRatio <= 3f)
+            {
+                project.WorkPercentage = 34f;
+            }
+            else if (expRatio <= 5f)
+            {
+                project.WorkPercentage = 50f;
+            }
+            else
+            {
+                project.WorkPercentage = 100f;
+            }
+
+            if (this.UserProfile.Energy < project.EnergyCost * (project.WorkPercentage / 100.0))
+            {
+                throw new InvalidOperationException("Not enough energy.");
+            }
+
+            this.UserProfile.Energy -= (int)(project.EnergyCost * (project.WorkPercentage / 100.0));
+            project.ProgressInPercentage += project.ProgressInPercentage + project.WorkPercentage;
+            if (project.ProgressInPercentage >= 100)
+            {
+                this.UserProfile.Experience += project.ExperienceGain;
+                this.UserProfile.Money += project.MoneyGain;
+                project.IsSolved = true;
             }
         }
     }
