@@ -61,6 +61,8 @@
 
         public DateTime? LastAction { get; set; }
 
+        public float ChanceToSolveCoefficient { get; set; }
+
         public float CoefficientKnowledgeGain { get; set; }
 
         public float CoefficientEnergyGain { get; set; }

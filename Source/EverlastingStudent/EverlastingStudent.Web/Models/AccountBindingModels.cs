@@ -4,6 +4,8 @@ using Newtonsoft.Json;
 
 namespace EverlastingStudent.Web.Models
 {
+    using EverlastingStudent.Common.Models;
+
     // Models used as parameters to AccountController actions.
 
     public class AddExternalLoginBindingModel
@@ -48,6 +50,8 @@ namespace EverlastingStudent.Web.Models
         [Display(Name = "Confirm password")]
         [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
         public string ConfirmPassword { get; set; }
+
+        public PlayerType Type { get; set; }
     }
 
     public class RegisterExternalBindingModel
