@@ -1,4 +1,6 @@
-﻿namespace EverlastingStudent.Data
+﻿using System.Linq;
+
+namespace EverlastingStudent.Data
 {
     using System;
     using System.Collections.Generic;

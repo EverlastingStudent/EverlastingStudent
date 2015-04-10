@@ -24,6 +24,5 @@
         protected IEverlastingStudentData Data { get; set; }
 
         protected Student UserProfile { get; set; }
-
     }
 }

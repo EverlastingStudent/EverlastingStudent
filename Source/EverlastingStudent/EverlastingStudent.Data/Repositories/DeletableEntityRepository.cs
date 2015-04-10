@@ -17,12 +17,12 @@
 
         public override IQueryable<T> All()
         {
-            return base.All().Where(x => !x.IsDeleted);
+            return base.All().OfType<T>().Where(x => !x.IsDeleted);
         }
 
         public IQueryable<T> AllWithDeleted()
         {
-            return base.All();
+            return base.All().OfType<T>();
         }
 
         public override void Delete(T entity)
