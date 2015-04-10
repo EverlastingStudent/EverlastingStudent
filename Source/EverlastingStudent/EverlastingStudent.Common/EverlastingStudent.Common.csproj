@@ -30,6 +30,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Microsoft.AspNet.Identity.Core">
+      <HintPath>..\packages\Microsoft.AspNet.Identity.Core.2.1.0\lib\net45\Microsoft.AspNet.Identity.Core.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
@@ -41,6 +44,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Contracts\IDeletableEntity.cs" />
+    <Compile Include="Infrastructure\AspNetUserProvider.cs" />
+    <Compile Include="Infrastructure\IUserProvider.cs" />
     <Compile Include="Models\DeletableEntity.cs" />
     <Compile Include="Models\PlayerType.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
