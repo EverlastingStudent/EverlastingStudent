@@ -3,19 +3,16 @@
     using System;
     using System.Linq;
     using System.Web.Http;
-    using EverlastingStudent.Data;
-    using EverlastingStudent.Models.FreelanceProjects;
-    using Microsoft.AspNet.Identity;
+    using Data;
     using EverlastingStudent.Common.Infrastructure;
+    using EverlastingStudent.Models.FreelanceProjects;
 
     [Authorize]
     public class FreelanceProjectsController : BaseApiController
     {
-        private IEverlastingStudentData data;
         public FreelanceProjectsController(IEverlastingStudentData data, IUserProvider userProvider)
             : base(data, userProvider)
         {
-            this.data = data;
         }
 
         [Authorize]
@@ -25,17 +22,21 @@
         {
             if (this.UserProfile.LastFreelanceProjectSearchDateTime != null && (DateTime.Now - (DateTime)this.UserProfile.LastFreelanceProjectSearchDateTime).Hours < 24)
             {
-                this.BadRequest(
-                    "You can search once for 24 hours. Next search will be available after: " +
-                    string.Format("{0:hh\\:mm\\:ss}", DateTime.Now - (DateTime)this.UserProfile.LastFreelanceProjectSearchDateTime));
+                return this.BadRequest(
+                     "You can search once for 24 hours. Next search will be available after: " +
+                     string.Format("{0:hh\\:mm\\:ss}", DateTime.Now.AddHours(-24) - (DateTime)this.UserProfile.LastFreelanceProjectSearchDateTime));
             }
 
             var studentBaseProject = this.UserProfile.FreelanceProjects.Select(y => y.BaseFreelanceProjectId);
             var rnd = new Random();
             int returnedRandomProjects = rnd.Next(1, this.UserProfile.Level + 1);
 
+            // Set Serach DateTime
+            this.UserProfile.LastFreelanceProjectSearchDateTime = DateTime.Now;
+            this.Data.SaveChanges();
+
             return this.Ok(
-                this.data.BaseFreelanceProjects
+                this.Data.BaseFreelanceProjects
                 .All()
                 .Where(x => !(x is FreelanceProject) && x.IsActive && studentBaseProject.All(z => z != x.Id))
                 .Take(returnedRandomProjects)
@@ -86,7 +87,7 @@
                 return this.BadRequest("No such student");
             }
 
-            var project = this.data.BaseFreelanceProjects.GetById(id);
+            var project = this.Data.BaseFreelanceProjects.GetById(id);
             if (project == null)
             {
                 return this.BadRequest("No such project");
@@ -118,14 +119,14 @@
                 this.UserProfile.FreelanceProjects.Add(newFreelanceProject);
 
                 // Copy properties to newFrelanceProject
-                this.data.Context.Entry(newFreelanceProject).CurrentValues.SetValues(project);
+                this.Data.Context.Entry(newFreelanceProject).CurrentValues.SetValues(project);
 
                 newFreelanceProject.BaseFreelanceProject = project;
                 newFreelanceProject.IsActive = true;
                 newFreelanceProject.StartDateTime = DateTime.Now;
                 newFreelanceProject.ProgressInPercentage = 0f;
 
-                this.data.SaveChanges();
+                this.Data.SaveChanges();
                 return this.Ok();
             }
             catch (Exception e)
@@ -144,7 +145,7 @@
                 return this.BadRequest("No such student found.");
             }
 
-            var project = this.data.FreelanceProjects.GetById(id);
+            var project = this.Data.FreelanceProjects.GetById(id);
             if (project == null)
             {
                 return this.BadRequest("No such project found.");
@@ -192,9 +193,31 @@
                     throw new InvalidOperationException("Not enough energy.");
                 }
 
+                var waitInRealMinutes = 5;
+                if (project.LastWorkingDateTime != null && (DateTime.Now - (DateTime)project.LastWorkingDateTime).Minutes < waitInRealMinutes)
+                {
+                    this.BadRequest(
+                        "Please wait Inverstor too approve your code.You can work after: " +
+                        string.Format("{0:hh\\:mm\\:ss}", DateTime.Now.AddMinutes(-waitInRealMinutes) - (DateTime)project.LastWorkingDateTime));
+                }
 
                 // TODO: take user energy and gain poject progress
+
+                this.UserProfile.Energy -= project.EnergyCost;
+
                 // TODO: check all active projects for passed deadline
+                var allProjectsOverDeadline = this.UserProfile.FreelanceProjects
+                    .Where(x => x.IsActive &&
+                            !x.IsSolved &&
+                            !x.IsDeleted &&
+                            DateTime.Now >= x.CloseForTakenDatetime);
+                foreach (var freelanceProject in allProjectsOverDeadline)
+                {
+                    // takes 10% * User level;
+                    this.UserProfile.Experience -= (long)(freelanceProject.ExperienceGain * 0.1 * this.UserProfile.Level);
+                    freelanceProject.IsActive = false;
+                }
+
                 return this.Ok(project);
             }
             catch (Exception e)

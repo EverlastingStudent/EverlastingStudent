@@ -29,6 +29,8 @@
 
         public DateTime? StartDateTime { get; set; }
 
+        public DateTime? LastWorkingDateTime { get; set; }
+
         public float ProgressInPercentage { get; set; }
     }
 }
