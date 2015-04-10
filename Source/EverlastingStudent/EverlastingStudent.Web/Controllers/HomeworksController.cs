@@ -1,7 +1,6 @@
 ﻿namespace EverlastingStudent.Web.Controllers
 {
     using System;
-    using System.Collections.Generic;
     using System.Data.Entity.SqlServer;
     using System.Linq;
     using System.Web.Http;
@@ -13,9 +12,6 @@
     using EverlastingStudent.Data;
     using EverlastingStudent.DataTransferObjects;
     using EverlastingStudent.Models;
-    using EverlastingStudent.Web.Models;
-
-    using Microsoft.AspNet.Identity;
 
     public class HomeworksController : BaseApiController
     {
@@ -31,19 +27,19 @@
             var easyHomework = this.Data.Homeworks
                                 .All()
                                 .Where(x => x.Type == TypeOfDifficulty.Easy)
-                                .OrderBy(x => SqlFunctions.Rand())
+                                .OrderBy(x => Guid.NewGuid())
                                .FirstOrDefault();
 
             var mediumHomework = this.Data.Homeworks
                                .All()
                                .Where(x => x.Type == TypeOfDifficulty.Medium)
-                               .OrderBy(x => SqlFunctions.Rand())
+                               .OrderBy(x => Guid.NewGuid())
                                .FirstOrDefault();
 
             var hardHomework = this.Data.Homeworks
                                .All()
                                .Where(x => x.Type == TypeOfDifficulty.Hard)
-                               .OrderBy(x => SqlFunctions.Rand())
+                               .OrderBy(x => Guid.NewGuid())
                                .FirstOrDefault();
 
             this.CalculateStats(easyHomework);
@@ -84,8 +80,8 @@
                 StudentId = this.UserProfile.Id,
                 Homework = homework,
                 EnergyCost = energyCost,
-                ExperienceGain = homeworkExperienceGain,
-                KnowledgeGain = homeworkKnowledgeGain,
+                ExperienceGain = homeworkExperienceGain < 1 ? 1 : homeworkExperienceGain,
+                KnowledgeGain = homeworkKnowledgeGain < 1 ? 1 : homeworkKnowledgeGain,
                 SolveDurabationInMinutes = 10,
                 CreatedOn = DateTime.Now
             };
