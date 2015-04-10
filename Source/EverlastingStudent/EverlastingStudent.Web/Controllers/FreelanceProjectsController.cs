@@ -6,13 +6,14 @@
     using EverlastingStudent.Data;
     using EverlastingStudent.Models.FreelanceProjects;
     using Microsoft.AspNet.Identity;
+    using EverlastingStudent.Common.Infrastructure;
 
+    [Authorize]
     public class FreelanceProjectsController : BaseApiController
     {
         private IEverlastingStudentData data;
-
-        public FreelanceProjectsController(IEverlastingStudentData data)
-            : base(data)
+        public FreelanceProjectsController(IEverlastingStudentData data, IUserProvider userProvider)
+            : base(data, userProvider)
         {
             this.data = data;
         }
@@ -22,18 +23,16 @@
         [ActionName("allActive")]
         public IHttpActionResult GetAllActiveProjects()
         {
-            var currentUserId = User.Identity.GetUserId();
-            var student = this.data.Students.All().FirstOrDefault(x => x.Id == currentUserId);
-            if (student.LastFreelanceProjectSearchDateTime != null && (DateTime.Now - (DateTime)student.LastFreelanceProjectSearchDateTime).Hours < 24)
+            if (this.UserProfile.LastFreelanceProjectSearchDateTime != null && (DateTime.Now - (DateTime)this.UserProfile.LastFreelanceProjectSearchDateTime).Hours < 24)
             {
                 this.BadRequest(
                     "You can search once for 24 hours. Next search will be available after: " +
-                    string.Format("{0:hh\\:mm\\:ss}", DateTime.Now - (DateTime)student.LastFreelanceProjectSearchDateTime));
+                    string.Format("{0:hh\\:mm\\:ss}", DateTime.Now - (DateTime)this.UserProfile.LastFreelanceProjectSearchDateTime));
             }
 
-            var studentBaseProject = student.FreelanceProjects.Select(y => y.BaseFreelanceProjectId);
+            var studentBaseProject = this.UserProfile.FreelanceProjects.Select(y => y.BaseFreelanceProjectId);
             var rnd = new Random();
-            int returnedRandomProjects = rnd.Next(1, student.Level + 1);
+            int returnedRandomProjects = rnd.Next(1, this.UserProfile.Level + 1);
 
             return this.Ok(
                 this.data.BaseFreelanceProjects
@@ -41,7 +40,7 @@
                 .Where(x => !(x is FreelanceProject) && x.IsActive && studentBaseProject.All(z => z != x.Id))
                 .Take(returnedRandomProjects)
                 .OrderByDescending(x => x.CloseForTakenDatetime)
-                .ToList()); 
+                .ToList());
 
             //.Select(x => new
             //{
@@ -64,10 +63,7 @@
         [ActionName("myProjects")]
         public IHttpActionResult GetUsersProjects()
         {
-            var currentUserId = User.Identity.GetUserId();
-            var student = this.data.Students.All().FirstOrDefault(x => x.Id == currentUserId);
-
-            return this.Ok(student.FreelanceProjects.ToList());
+            return this.Ok(this.UserProfile.FreelanceProjects.ToList());
             //.Select(x => new
             //{
             //    x.Id,
@@ -85,10 +81,7 @@
         [ActionName("take")]
         public IHttpActionResult TakeProject(int id)
         {
-            var currentUserId = User.Identity.GetUserId();
-            var student = this.data.Students.All().FirstOrDefault(x => x.Id == currentUserId);
-
-            if (student == null)
+            if (this.UserProfile == null)
             {
                 return this.BadRequest("No such student");
             }
@@ -111,18 +104,18 @@
                     throw new InvalidOperationException("Project is not active.");
                 }
 
-                if (student.FreelanceProjects.Any(x => x.BaseFreelanceProjectId == project.Id))
+                if (this.UserProfile.FreelanceProjects.Any(x => x.BaseFreelanceProjectId == project.Id))
                 {
                     throw new InvalidOperationException("You are working on this project.");
                 }
 
-                if (student.Experience < project.RequireExperience)
+                if (this.UserProfile.Experience < project.RequireExperience)
                 {
                     throw new InvalidOperationException("Not enough experience.");
                 }
 
                 var newFreelanceProject = new FreelanceProject();
-                student.FreelanceProjects.Add(newFreelanceProject);
+                this.UserProfile.FreelanceProjects.Add(newFreelanceProject);
 
                 // Copy properties to newFrelanceProject
                 this.data.Context.Entry(newFreelanceProject).CurrentValues.SetValues(project);
@@ -146,10 +139,7 @@
         [ActionName("work")]
         public IHttpActionResult WorkOnProject(object id)
         {
-            var currentUserId = User.Identity.GetUserId();
-            var student = this.data.Students.All().FirstOrDefault(x => x.Id == currentUserId);
-
-            if (student == null)
+            if (this.UserProfile == null)
             {
                 return this.BadRequest("No such student found.");
             }
@@ -167,7 +157,7 @@
 
             try
             {
-                if (student.FreelanceProjects.All(x => x.Id != project.Id))
+                if (this.UserProfile.FreelanceProjects.All(x => x.Id != project.Id))
                 {
                     throw new InvalidOperationException("You have to add project to work on it.");
                 }
@@ -192,12 +182,12 @@
                     throw new InvalidOperationException("Project is not active yet.");
                 }
 
-                if (student.Experience < project.RequireExperience)
+                if (this.UserProfile.Experience < project.RequireExperience)
                 {
                     throw new InvalidOperationException("Not enough experience.");
                 }
 
-                if (student.Energy < project.EnergyCost)
+                if (this.UserProfile.Energy < project.EnergyCost)
                 {
                     throw new InvalidOperationException("Not enough energy.");
                 }
