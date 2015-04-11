@@ -3,6 +3,8 @@
     using System;
     using System.ComponentModel.DataAnnotations;
 
+    using EverlastingStudent.Common.Models;
+
     public class StudentHomework
     {
         [Key]
@@ -25,8 +27,12 @@
 
         public int SolveDurabationInMinutes { get; set; }
 
+        public TypeOfDifficulty Type { get; set; }
+
         public bool IsSolved { get; set; }
 
         public DateTime CreatedOn { get; set; }
+
+        public bool InProgress { get; set; }
     }
 }

@@ -1,14 +1,19 @@
 ﻿namespace EverlastingStudent.Web.Controllers
 {
+    using System;
+    using System.Linq;
     using System.Web.Http;
+    using System.Web.UI.WebControls;
 
     using EverlastingStudent.Common.Infrastructure;
+    using EverlastingStudent.Common.Models;
     using EverlastingStudent.Data;
     using EverlastingStudent.Models;
 
     public class BaseApiController : ApiController
     {
         private IUserProvider provider;
+        private static Random random = new Random();
 
         public BaseApiController(IEverlastingStudentData data, IUserProvider userProvider)
         {
@@ -24,6 +29,61 @@
             {
                 return this.Data.Students.GetById(this.provider.GetUserId());
             }
+        }
+
+        protected bool GiveStats()
+        {
+            var student = this.Data.Students.GetById(this.UserProfile.Id);
+
+            var homework = student.StudentHomeworks.FirstOrDefault(x => x.InProgress);
+
+            if (homework != null)
+            {
+                student.IsBusy = false;
+                homework.InProgress = false;
+                // calculate chance for homework
+                var randomItemNumber = random.NextDouble();
+
+                if (homework.Type == TypeOfDifficulty.Easy)
+                {
+                    if (random.NextDouble() < 0.90)
+                    {
+                        this.GiveHomeworkStats(homework, student);
+                        return true;
+                    }
+
+                    return false;
+                }
+
+                if (homework.Type == TypeOfDifficulty.Medium)
+                {
+                    if (random.NextDouble() < 0.70)
+                    {
+                        this.GiveHomeworkStats(homework, student);
+                        return true;
+                    }
+
+                    return false;
+                }
+
+                if (random.NextDouble() < 0.40)
+                {
+                    this.GiveHomeworkStats(homework, student);
+                    return true;
+                }
+
+                return false;
+            }
+
+            // add check if other action is inprograss
+            return true;
+        }
+
+        private void GiveHomeworkStats(StudentHomework homework, Student student)
+        {
+            student.Knowledge += (long)(homework.KnowledgeGain * student.CoefficientKnowledgeGain);
+            student.Experience += (long)(homework.ExperienceGain * student.CoefficientExperienceGain);
+            homework.IsSolved = true;
         }
     }
 }

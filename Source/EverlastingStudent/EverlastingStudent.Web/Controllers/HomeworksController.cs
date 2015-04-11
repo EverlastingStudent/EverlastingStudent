@@ -1,7 +1,6 @@
 ﻿namespace EverlastingStudent.Web.Controllers
 {
     using System;
-    using System.Data.Entity.SqlServer;
     using System.Linq;
     using System.Web.Http;
 
@@ -13,6 +12,7 @@
     using EverlastingStudent.DataTransferObjects;
     using EverlastingStudent.Models;
 
+    [Authorize]
     public class HomeworksController : BaseApiController
     {
         public HomeworksController(IEverlastingStudentData data, IUserProvider userProvider)
@@ -24,6 +24,16 @@
         [HttpGet]
         public IHttpActionResult GetHomeworks()
         {
+
+            var unsolvedHomeworks = this.Data.StudentHomeworks.All().Where(sh => !sh.IsSolved && sh.StudentId == this.UserProfile.Id);
+            if (unsolvedHomeworks.Any())
+            {
+                foreach (var homework in unsolvedHomeworks)
+                {
+                    this.Data.StudentHomeworks.Delete(homework);
+                }
+            }
+
             var easyHomework = this.Data.Homeworks
                                 .All()
                                 .Where(x => x.Type == TypeOfDifficulty.Easy)
@@ -48,7 +58,7 @@
 
             this.Data.SaveChanges();
 
-            var easyHomeworkDto = this.Data.StudentHomeworks
+            var homeworkskDto = this.Data.StudentHomeworks
                 .All()
                 .OrderByDescending(x => x.CreatedOn)
                 .Take(3)
@@ -56,7 +66,59 @@
                 .To<GetHomeworksDto>()
                 .ToList();
 
-            return this.Ok(easyHomeworkDto);
+            return this.Ok(homeworkskDto);
+        }
+
+        [HttpPost]
+        public IHttpActionResult Solve(int id)
+        {
+            var homework = this.Data.StudentHomeworks.All().FirstOrDefault(x => x.Id == id);
+
+            if (homework == null)
+            {
+                return this.BadRequest("Homework doesn't exist");
+            }
+
+            if (homework.StudentId != this.UserProfile.Id)
+            {
+                return this.BadRequest("Homework doesn't belong to you");
+            }
+
+            if (homework.IsSolved)
+            {
+                return this.BadRequest("You already solved this homework");
+            }
+
+            var student = this.Data.Students.GetById(this.UserProfile.Id);
+            //student.BusyUntil = DateTime.Now;
+            //this.Data.SaveChanges();
+            //return null;
+
+            if (student.IsBusy)
+            {
+                if (student.BusyUntil > DateTime.Now)
+                {
+                    return this.BadRequest("You are buzy right now");
+                }
+
+                this.GiveStats();
+                this.Data.SaveChanges();
+            }
+
+            
+            if (student.Energy >= homework.EnergyCost)
+            {
+                student.IsBusy = true;
+                student.BusyUntil = DateTime.Now.AddMinutes(homework.SolveDurabationInMinutes);
+                student.Energy -= homework.EnergyCost;
+                homework.InProgress = true;
+                this.Data.SaveChanges();
+                return this.Ok("Solving is in progress... " + homework.SolveDurabationInMinutes + " minutes left");
+            }
+            else
+            {
+                return this.BadRequest("You don't have enough energy to solve this homework. Drink Some Coffee or take a rest"); 
+            }
         }
 
         private void CalculateStats(Homework homework)
@@ -83,6 +145,7 @@
                 ExperienceGain = homeworkExperienceGain < 1 ? 1 : homeworkExperienceGain,
                 KnowledgeGain = homeworkKnowledgeGain < 1 ? 1 : homeworkKnowledgeGain,
                 SolveDurabationInMinutes = 10,
+                Type = homework.Type,
                 CreatedOn = DateTime.Now
             };
 

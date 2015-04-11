@@ -77,6 +77,8 @@
 
         public bool IsBusy { get; set; }
 
+        public DateTime? BusyUntil { get; set; }
+
         public PlayerType PlayerType { get; set; }
 
         public DateTime? LastFreelanceProjectSearchDateTime { get; set; }
