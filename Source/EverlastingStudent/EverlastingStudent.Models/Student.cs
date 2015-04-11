@@ -18,6 +18,7 @@
         private ICollection<FreelanceProject> studentFreelanceProjects;
         private ICollection<StudentInCourses> studentInCourses;
         private ICollection<HardwarePart> hardwareParts;
+        private ICollection<Drink> drinks;
 
         private long experience;
 
@@ -27,6 +28,7 @@
             this.studentFreelanceProjects = new HashSet<FreelanceProject>();
             this.studentInCourses = new HashSet<StudentInCourses>();
             this.hardwareParts = new HashSet<HardwarePart>();
+            this.drinks = new HashSet<Drink>();
         }
 
         public long Experience
@@ -107,6 +109,12 @@
         {
             get { return this.hardwareParts; }
             set { this.hardwareParts = value; }
+        }
+
+        public virtual ICollection<Drink> Drinks
+        {
+            get { return this.drinks; }
+            set { this.drinks = value; }
         }
 
         public async Task<ClaimsIdentity> GenerateUserIdentityAsync(UserManager<Student> manager, string authenticationType)
