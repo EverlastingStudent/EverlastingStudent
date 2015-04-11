@@ -56,6 +56,11 @@ namespace EverlastingStudent.Data
             get { return this.GetDeletableEntityRepository<Homework>(); }
         }
 
+        public IDeletableEntityRepository<Lecture> Lectures
+        {
+            get { return this.GetDeletableEntityRepository<Lecture>(); }
+        }
+
         public IGenericRepository<SpecializedCourse> SpecializedCourse
         {
             get { return this.GetRepository<SpecializedCourse>(); }

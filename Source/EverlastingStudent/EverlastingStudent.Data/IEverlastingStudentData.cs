@@ -20,6 +20,8 @@
 
         IDeletableEntityRepository<Homework> Homeworks { get; }
 
+        IDeletableEntityRepository<Lecture> Lectures { get; }
+
         IGenericRepository<SpecializedCourse> SpecializedCourse { get; }
 
         IGenericRepository<StudentHomework> StudentHomeworks { get; }

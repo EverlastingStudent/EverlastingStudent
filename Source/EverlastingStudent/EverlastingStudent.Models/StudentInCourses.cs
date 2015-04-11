@@ -1,5 +1,6 @@
 ﻿namespace EverlastingStudent.Models
 {
+    using System;
     using System.ComponentModel.DataAnnotations;
 
     public class StudentInCourses
@@ -7,7 +8,7 @@
         [Key]
         public int Id { get; set; }
 
-        public int StudentId { get; set; }
+        public string StudentId { get; set; }
 
         public virtual Student Student { get; set; }
 
@@ -20,5 +21,7 @@
         public bool IsPassed { get; set; }
 
         public bool IsPassedWithExcellence { get; set; }
+
+        public DateTime? PassedOn { get; set; }
     }
 }

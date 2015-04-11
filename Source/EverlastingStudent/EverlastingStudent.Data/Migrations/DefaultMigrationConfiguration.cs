@@ -27,6 +27,11 @@ namespace EverlastingStudent.Data.Migrations
             {
                 this.SeedBaseFreelanceProjects(context);
             }
+
+            if (!context.Courses.Any())
+            {
+                this.SeedCourses(context);
+            }
         }
 
         private void SeedHomeworks(EverlastingStudentDbContext context)
@@ -174,6 +179,175 @@ namespace EverlastingStudent.Data.Migrations
                 IsDeleted = false,
                 DeletedOn = null
             });
+
+            context.SaveChanges();
+        }
+
+        private void SeedCourses(EverlastingStudentDbContext context)
+        {
+            context.Courses.Add(new Course()
+            {
+                Title = "Programming Basics",
+                Lectures = 
+                { 
+                    new Lecture()
+                    {
+                         Title = "Introduction to C#",
+                         DurationInMinutes = 5,
+                         CoefficientKnowledgeGain = 0.01
+                    },
+                    new Lecture(){
+                         Title = "Console Input and Output",
+                         DurationInMinutes = 5,
+                         CoefficientKnowledgeGain = 0.01
+                    },
+                    new Lecture(){
+                         Title = "Conditional Statements",
+                         DurationInMinutes = 5,
+                         CoefficientKnowledgeGain = 0.01
+                    }
+                },
+                Exam = new Exam
+                {
+                    ExamDurationInMinutes = 30,
+                    RequireExpForExam = 100
+                }
+            });
+            context.Courses.Add(new Course()
+            {
+                Title = "Java Basics",
+                Lectures = 
+                { 
+                    new Lecture()
+                    {
+                         Title = "Introduction to Java",
+                         DurationInMinutes = 10,
+                         CoefficientKnowledgeGain = 0.015
+                    },
+                    new Lecture(){
+                         Title = "Loops",
+                         DurationInMinutes = 10,
+                         CoefficientKnowledgeGain = 0.015
+                    },
+                    new Lecture(){
+                         Title = "Strings",
+                         DurationInMinutes = 10,
+                         CoefficientKnowledgeGain = 0.015
+                    },
+                    new Lecture(){
+                         Title = "Arrays",
+                         DurationInMinutes = 10,
+                         CoefficientKnowledgeGain = 0.015
+                    }
+                },
+                Exam = new Exam
+                {
+                    ExamDurationInMinutes = 45,
+                    RequireExpForExam = 200
+                }
+            });
+            context.Courses.Add(new Course()
+            {
+                Title = "Object-Oriented Programming",
+                Lectures = 
+                { 
+                    new Lecture()
+                    {
+                         Title = "Introduction to OOP",
+                         DurationInMinutes = 15,
+                         CoefficientKnowledgeGain = 0.02
+                    },
+                    new Lecture(){
+                         Title = "Defining Classes",
+                         DurationInMinutes = 15,
+                         CoefficientKnowledgeGain = 0.02
+                    },
+                    new Lecture(){
+                         Title = "Inheritance and Encapsulation",
+                         DurationInMinutes = 25,
+                         CoefficientKnowledgeGain = 0.02
+                    },
+                    new Lecture(){
+                         Title = "Abstraction and Polymorphism",
+                         DurationInMinutes = 25,
+                         CoefficientKnowledgeGain = 0.02
+                    }
+                },
+                Exam = new Exam
+                {
+                    ExamDurationInMinutes = 60,
+                    RequireExpForExam = 400
+                }
+            });
+            context.Courses.Add(new Course()
+            {
+                Title = "High-Quality Code",
+                Lectures = 
+                { 
+                    new Lecture()
+                    {
+                         Title = "Quality Identifiers and Methods",
+                         DurationInMinutes = 15,
+                         CoefficientKnowledgeGain = 0.02
+                    },
+                    new Lecture(){
+                         Title = "Code Refacturing",
+                         DurationInMinutes = 15,
+                         CoefficientKnowledgeGain = 0.02
+                    },
+                    new Lecture(){
+                         Title = "Unit Testing and Mocking",
+                         DurationInMinutes = 25,
+                         CoefficientKnowledgeGain = 0.02
+                    },
+                    new Lecture(){
+                         Title = "Design Patterns",
+                         DurationInMinutes = 25,
+                         CoefficientKnowledgeGain = 0.02
+                    }
+                },
+                Exam = new Exam
+                {
+                    ExamDurationInMinutes = 75,
+                    RequireExpForExam = 600
+                }
+            });
+            context.Courses.Add(new Course()
+            {
+                Title = "HTML Basics"
+            });
+            context.Courses.Add(new Course()
+            {
+                Title = "CSS Basics"
+            });
+            context.Courses.Add(new Course()
+            {
+                Title = "PHP Basics"
+            });
+            context.Courses.Add(new Course()
+            {
+                Title = "JavaScript Basics"
+            });
+            context.Courses.Add(new Course()
+            {
+                Title = "Advanced JavaScript"
+            });
+            context.Courses.Add(new Course()
+            {
+                Title = "JavaScript Applications"
+            });
+            context.Courses.Add(new Course()
+            {
+                Title = "AngularJS"
+            });
+
+            var count = context.Courses.Count();
+
+            for (int i = 0; i < count - 1; i++)
+            {
+                var course = context.Courses.Find(i);
+                course.NextCourseId = i + 1;
+            }
 
             context.SaveChanges();
         }
