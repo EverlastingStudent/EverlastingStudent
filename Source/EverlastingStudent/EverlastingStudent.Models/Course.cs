@@ -12,6 +12,7 @@
         public Course()
         {
             this.studentInCourses = new HashSet<StudentInCourses>();
+            this.Lectures = new HashSet<Lecture>();
         }
 
         [Key]
@@ -20,11 +21,11 @@
         [Required]
         public string Title { get; set; }
 
-        public int NextCourceId { get; set; }
+        public int? NextCourseId { get; set; }
 
-        public Course NextCource { get; set; }
+        public Course NextCourse { get; set; }
 
-        public int ExamId { get; set; }
+        public int? ExamId { get; set; }
 
         public virtual Exam Exam { get; set; }
 
@@ -33,5 +34,7 @@
             get { return this.studentInCourses; }
             set { this.studentInCourses = value; }
         }
+
+        public virtual ICollection<Lecture> Lectures { get; set; }
     }
 }

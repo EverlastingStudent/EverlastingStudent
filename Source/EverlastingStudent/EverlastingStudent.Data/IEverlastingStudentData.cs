@@ -18,7 +18,11 @@
 
         IDeletableEntityRepository<HardwarePart> HardwareParts { get; }
 
+        IDeletableEntityRepository<Drink> Drinks { get; }
+
         IDeletableEntityRepository<Homework> Homeworks { get; }
+
+        IDeletableEntityRepository<Lecture> Lectures { get; }
 
         IGenericRepository<SpecializedCourse> SpecializedCourse { get; }
 

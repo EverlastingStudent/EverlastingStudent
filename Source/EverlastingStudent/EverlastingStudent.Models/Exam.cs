@@ -13,6 +13,6 @@
 
         public Course Course { get; set; }
 
-        public int ExamDurationInHours { get; set; }
+        public int ExamDurationInMinutes { get; set; }
     }
 }

@@ -53,6 +53,7 @@
     <Compile Include="Drink.cs" />
     <Compile Include="FreelanceProjects\BaseFreelanceProject.cs" />
     <Compile Include="HardwarePart.cs" />
+    <Compile Include="Lecture.cs" />
     <Compile Include="Student.cs" />
     <Compile Include="Course.cs" />
     <Compile Include="Exam.cs" />

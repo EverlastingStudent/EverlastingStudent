@@ -22,6 +22,8 @@
 
         IDbSet<Homework> Homeworks { get; set; }
 
+        IDbSet<Lecture> Lectures { get; set; }
+
         IDbSet<SpecializedCourse> SpecializedCourses { get; set; }
 
         IDbSet<StudentHomework> StudentHomeworks { get; set; }
