@@ -224,7 +224,9 @@
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\BaseApiController.cs" />
     <Compile Include="Controllers\CoursesController.cs" />
+    <Compile Include="Controllers\DrinksController.cs" />
     <Compile Include="Controllers\FreelanceProjectsController.cs" />
+    <Compile Include="Controllers\HardwaresController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\HomeworksController.cs" />
     <Compile Include="Controllers\LectureController.cs" />
