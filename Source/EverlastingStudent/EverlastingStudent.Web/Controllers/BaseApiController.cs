@@ -31,10 +31,34 @@
             }
         }
 
-        protected bool GiveStats()
+        protected bool CheckIfAnyActionIsDone(Student student)
         {
-            var student = this.Data.Students.GetById(this.UserProfile.Id);
 
+            if (student.BusyUntil > DateTime.Now)
+            {
+                return false;
+            }
+
+            this.GiveStats(student);
+            return true;
+
+        }
+
+        protected void GiveEnergy(Student student)
+        {
+            var minutesDifference = (int)(DateTime.Now.Subtract(student.LastAction).TotalMinutes * student.CoefficientEnergyGain) ;
+            student.LastAction = DateTime.Now;
+            if (student.Energy + minutesDifference > 100)
+            {
+                student.Energy = 100;
+                return;
+            }
+
+            student.Energy += minutesDifference;
+        }
+
+        private void GiveStats(Student student)
+        {
             var homework = student.StudentHomeworks.FirstOrDefault(x => x.InProgress);
 
             if (homework != null)
@@ -49,10 +73,10 @@
                     if (random.NextDouble() < 0.90)
                     {
                         this.GiveHomeworkStats(homework, student);
-                        return true;
+                        return;
                     }
 
-                    return false;
+                    return;
                 }
 
                 if (homework.Type == TypeOfDifficulty.Medium)
@@ -60,23 +84,19 @@
                     if (random.NextDouble() < 0.70)
                     {
                         this.GiveHomeworkStats(homework, student);
-                        return true;
+                        return;
                     }
 
-                    return false;
+                    return;
                 }
 
                 if (random.NextDouble() < 0.40)
                 {
                     this.GiveHomeworkStats(homework, student);
-                    return true;
                 }
-
-                return false;
             }
 
             // add check if other action is inprograss
-            return true;
         }
 
         private void GiveHomeworkStats(StudentHomework homework, Student student)

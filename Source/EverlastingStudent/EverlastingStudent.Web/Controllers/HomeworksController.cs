@@ -73,6 +73,19 @@
         public IHttpActionResult Solve(int id)
         {
             var homework = this.Data.StudentHomeworks.All().FirstOrDefault(x => x.Id == id);
+            var student = this.Data.Students.GetById(this.UserProfile.Id);
+
+            this.GiveEnergy(student);
+            this.Data.SaveChanges();
+
+            if (student.IsBusy)
+            {
+                if (!this.CheckIfAnyActionIsDone(student))
+                {
+                    return this.BadRequest("You are buzy right now");
+                }
+            }
+
 
             if (homework == null)
             {
@@ -89,22 +102,9 @@
                 return this.BadRequest("You already solved this homework");
             }
 
-            var student = this.Data.Students.GetById(this.UserProfile.Id);
             //student.BusyUntil = DateTime.Now;
             //this.Data.SaveChanges();
             //return null;
-
-            if (student.IsBusy)
-            {
-                if (student.BusyUntil > DateTime.Now)
-                {
-                    return this.BadRequest("You are buzy right now");
-                }
-
-                this.GiveStats();
-                this.Data.SaveChanges();
-            }
-
             
             if (student.Energy >= homework.EnergyCost)
             {

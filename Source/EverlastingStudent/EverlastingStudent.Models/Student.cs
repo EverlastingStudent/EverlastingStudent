@@ -61,7 +61,7 @@
 
         public int Energy { get; set; }
 
-        public DateTime? LastAction { get; set; }
+        public DateTime LastAction { get; set; }
 
         public float ChanceToSolveCoefficient { get; set; }
 
