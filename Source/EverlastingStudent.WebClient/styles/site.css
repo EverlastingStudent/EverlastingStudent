@@ -1,0 +1,70 @@
+body {
+    background-color: #EEEEEE;
+}
+
+#logo {
+    text-align: center;
+}
+
+#logo img {
+    width: 128px;
+}
+
+header h1 {
+    margin-top: 37px;
+    color: #ffffff;
+    font-size: 50px;
+}
+
+header div.row, footer div#footer {
+    background-color: #234465;
+    margin-right: 0;
+}
+
+footer div#footer {
+    height: 30px;
+    text-align: center;
+    color: #fff;
+    padding: 10px;
+}
+
+footer div#footer {
+    width: 100%;
+}
+
+div.jumbotron {
+    padding: 40px;
+}
+
+.top-buffer {
+    margin-top:20px;
+}
+
+.bottom-buffer {
+    margin-bottom:20px;
+}
+
+.well {
+    margin-bottom: 0;
+}
+
+#login-form {
+    color: #fff;
+    margin: 120px auto;
+    background-color: #234465;
+    padding: 30px;
+    width: 40%;
+    -webkit-border-radius: 10px;
+    -moz-border-radius: 10px;
+    border-radius: 10px;
+}
+
+#register-form {
+    width: 80%; color: #fff;
+    margin: 120px auto;
+    background-color: #234465;
+    padding: 30px;
+    -webkit-border-radius: 10px;
+    -moz-border-radius: 10px;
+    border-radius: 10px;
+}

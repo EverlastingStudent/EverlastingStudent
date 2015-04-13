@@ -1,0 +1,74 @@
+<!--<div id="register-form">-->
+	<!--<label for="username">Username:</label>-->
+	<!--<input type="text" id="username" />-->
+	<!--<br />-->
+	<!--<label for="password">Password:</label>-->
+	<!--<input type="password" id="password" />-->
+	<!--<br />-->
+	<!--<label for="confirm-password">Confirm Password:</label>-->
+	<!--<input type="password" id="confirm-password" />-->
+	<!--<br />-->
+	<!--<label for="freelancer">Freelancer:</label>-->
+	<!--<input id="freelancer" type="radio" name="type" value="freelancer"><br>-->
+	<!--<label for="nerd">Nerd:</label>-->
+	<!--<input id="nerd" type="radio" name="type" value="nerd"><br>-->
+	<!--<label for="lucky">Lucky:</label>-->
+	<!--<input id="lucky" type="radio" name="type" value="lucky"><br>-->
+	<!--<label for="hyperactive">Freelancer:</label>-->
+	<!--<input id="hyperactive" type="radio" name="type" value="hyperActive"><br>-->
+	<!--<br />-->
+	<!--<button id="register">Register</button>-->
+<!--</div>-->
+
+<form id="register-form" class="form-horizontal">
+	<fieldset>
+		<div class="form-group">
+			<label for="username" class="col-md-2 control-label">Email</label>
+			<div class="col-md-10">
+				<input type="text" class="form-control" id="username" placeholder="Email">
+			</div>
+		</div>
+		<div class="form-group">
+			<label for="password" class="col-md-2 control-label">Password</label>
+			<div class="col-md-10">
+				<input type="password" class="form-control" id="password" placeholder="Password">
+			</div>
+		</div>
+		<div class="form-group">
+			<label for="confirm-password" class="col-md-2 control-label">Confirm Password</label>
+			<div class="col-md-10">
+				<input type="password" class="form-control" id="confirm-password" placeholder="Password">
+			</div>
+		</div>
+
+		<div class="form-group">
+			<div class="col-md-3">
+				<label for="freelancer">Freelancer:</label>
+				<input id="freelancer" type="radio" name="type" value="freelancer">
+				<img src="images/freelancer.png" alt="freelancer"/>
+			</div>
+			<div class="col-md-3">
+				<label for="nerd">Nerd:</label>
+				<input id="nerd" type="radio" name="type" value="nerd">
+				<img src="images/nerd.png" alt="nerd"/>
+			</div>
+			<div class="col-md-3">
+				<label for="lucky">Lucky:</label>
+				<input id="lucky" type="radio" name="type" value="lucky">
+				<img src="images/lucky.png" alt="lucky"/>
+			</div>
+			<div class="col-md-3">
+				<label for="hyperactive">Freelancer:</label>
+				<input id="hyperactive" type="radio" name="type" value="hyperActive">
+				<img src="images/Hyperactive.png" alt="hyperactive"/>
+			</div>
+		</div>
+
+		<div class="form-group">
+			<div class="col-md-10 col-md-offset-2">
+				<button type="reset" class="btn btn-default">Clear</button>
+				<button class="btn btn-warning" id="register">Register</button>
+			</div>
+		</div>
+	</fieldset>
+</form>
