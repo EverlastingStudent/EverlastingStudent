@@ -3,7 +3,6 @@ var app = app || {};
 app.data = (function () {
 	function Data (baseUrl, ajaxRequester) {
 		this.users = new Users(baseUrl, ajaxRequester);
-		this.bookmarks = new Bookmarks(baseUrl, ajaxRequester);
 	}
 
 	var cradentials = (function () {
@@ -20,8 +19,7 @@ app.data = (function () {
 		}
 
 		function getUsername(sessionToken) {
-			localStorage.getItem('username');
-		}
+			localStorage.getItem('username');		}
 
 		function setUsername(sessionToken) {
 			localStorage.setItem('username', sessionToken);
