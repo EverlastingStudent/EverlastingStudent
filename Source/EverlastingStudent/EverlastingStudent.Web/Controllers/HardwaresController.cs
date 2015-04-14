@@ -20,7 +20,7 @@ namespace EverlastingStudent.Web.Controllers
         [HttpGet]
         public IHttpActionResult GetNames()
         {
-            var hardware = this.Data.HardwareParts.All();
+            var hardware = this.Data.HardwareParts.All().Select(d => new { Id = d.Id, Name = d.Name, Cost = d.MoneyCost });
             if (hardware == null)
             {
                 return this.BadRequest("There are no hardware parts to display");
@@ -32,7 +32,7 @@ namespace EverlastingStudent.Web.Controllers
         [HttpGet]
         public IHttpActionResult GetHardware(int id)
         {
-            var hardware = this.Data.HardwareParts.All().FirstOrDefault(d => d.Id == id);
+            var hardware = this.Data.HardwareParts.All().Select(d => new { Id = d.Id, Name = d.Name, Cost = d.MoneyCost }).FirstOrDefault(d => d.Id == id);
             if (hardware == null)
             {
                 return this.BadRequest("There is no hardware !");

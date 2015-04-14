@@ -25,7 +25,7 @@ namespace EverlastingStudent.Models
 
         public int MoneyCost { get; set; }
 
-        public ICollection<Student> Students
+        public virtual ICollection<Student> Students
         {
             get { return this.students; }
             set { this.students = value; }

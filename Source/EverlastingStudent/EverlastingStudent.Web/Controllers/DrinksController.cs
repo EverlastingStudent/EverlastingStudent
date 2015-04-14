@@ -20,7 +20,7 @@ namespace EverlastingStudent.Web.Controllers
         [HttpGet]
         public IHttpActionResult GetNames()
         {
-            var drinks = this.Data.Drinks.All();
+            var drinks = this.Data.Drinks.All().Select(d => new { Id = d.Id, Name = d.Name, Energy = d.EnergyBonus, Cost = d.MoneyCost });
             if (drinks == null)
             {
                 return this.BadRequest("There are no drinks to display");
@@ -32,7 +32,7 @@ namespace EverlastingStudent.Web.Controllers
         [HttpGet]
         public IHttpActionResult GetDrink(int id)
         {
-            var drink = this.Data.Drinks.All().FirstOrDefault(d => d.Id == id);
+            var drink = this.Data.Drinks.All().Select(d => new { Id = d.Id, Name = d.Name, Energy = d.EnergyBonus, Cost = d.MoneyCost }).FirstOrDefault(d => d.Id == id);
             if (drink == null)
             {
                 return this.BadRequest("There is no drink !");
