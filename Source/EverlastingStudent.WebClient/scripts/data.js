@@ -109,6 +109,82 @@ app.data = (function () {
         return freelanceProjects;
     }());
 
+    var Drinks = (function (argument) {
+            function Drinks(baseUrl, ajaxRequester) {
+                this._serviceUrl = baseUrl;
+                this._ajaxRequester = ajaxRequester;
+                this._headers = cradentials.getHeaders();
+            }
+
+            Drinks.prototype.names = function () {
+                var url = this._serviceUrl + "api/Drinks/GetNames";
+                return this._ajaxRequester.get(url, { 'Authorization': localStorage.getItem('sessionToken') })
+                    .then(function (data) {
+                        console.log("Drinks successfully loaded");
+                        return data;
+                    });
+            };
+
+
+            Drinks.prototype.getDrink = function (id) {
+                var url = this._serviceUrl + "api/Drinks/GetADrink/" + id;
+                return this._ajaxRequester.post(url, null, { 'Authorization': localStorage.getItem('sessionToken') })
+                    .then(function (data) {
+                        console.log("Drink successfully taken.");
+                        return data;
+                    });
+            };
+
+            Drinks.prototype.buyDrink = function (id) {
+                var url = this._serviceUrl + "api/Drinks/BuyADrink/" + id;
+                return this._ajaxRequester.post(url, null, { 'Authorization': localStorage.getItem('sessionToken') })
+                    .then(function (data) {
+                        console.log("Drink successfully bought.");
+                        return data;
+                    });
+            };
+
+            return Drinks;
+        }());
+
+        var hardwareParts = (function (argument) {
+                    function hardwareParts(baseUrl, ajaxRequester) {
+                        this._serviceUrl = baseUrl;
+                        this._ajaxRequester = ajaxRequester;
+                        this._headers = cradentials.getHeaders();
+                    }
+
+                    hardwareParts.prototype.names = function () {
+                        var url = this._serviceUrl + "api/Hardwares/GetNames";
+                        return this._ajaxRequester.get(url, { 'Authorization': localStorage.getItem('sessionToken') })
+                            .then(function (data) {
+                                console.log("Hardwares successfully loaded");
+                                return data;
+                            });
+                    };
+
+
+                    hardwareParts.prototype.getDrink = function (id) {
+                        var url = this._serviceUrl + "api/Hardwares/GetHardware/" + id;
+                        return this._ajaxRequester.post(url, null, { 'Authorization': localStorage.getItem('sessionToken') })
+                            .then(function (data) {
+                                console.log("Hardwares successfully taken.");
+                                return data;
+                            });
+                    };
+
+                    hardwareParts.prototype.buyDrink = function (id) {
+                        var url = this._serviceUrl + "api/Hardwares/BuyHardware/" + id;
+                        return this._ajaxRequester.post(url, null, { 'Authorization': localStorage.getItem('sessionToken') })
+                            .then(function (data) {
+                                console.log("Hardwares successfully bought.");
+                                return data;
+                            });
+                    };
+
+                    return hardwareParts;
+                }());
+
     return {
         get: function (baseUrl, ajaxRequester) {
             return new Data(baseUrl, ajaxRequester);
