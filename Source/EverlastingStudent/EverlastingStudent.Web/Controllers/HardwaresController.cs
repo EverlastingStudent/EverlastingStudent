@@ -1,14 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Net.Http;
-using System.Web.Http;
-using EverlastingStudent.Common.Infrastructure;
-using EverlastingStudent.Data;
-
-namespace EverlastingStudent.Web.Controllers
+﻿namespace EverlastingStudent.Web.Controllers
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Net;
+    using System.Net.Http;
+    using System.Web.Http;
+    using EverlastingStudent.Common.Infrastructure;
+    using EverlastingStudent.Data;
+
     [Authorize]
     public class HardwaresController : BaseApiController
     {

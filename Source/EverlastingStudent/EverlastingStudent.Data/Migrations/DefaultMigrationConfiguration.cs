@@ -349,10 +349,6 @@ namespace EverlastingStudent.Data.Migrations
             {
                 var course = context.Courses.Where(c => c.Id == i).First();
                 var nextCourse = context.Courses.Where(c => c.Id == i+1).First();
-                if (course == null || nextCourse == null)
-                {
-                    throw new Exception("NEEEEEEEEEEEEEEEEEEEEEEEEEEE");
-                }
                 course.NextCourse = nextCourse;
             }
 

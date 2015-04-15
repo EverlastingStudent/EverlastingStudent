@@ -1,8 +1,7 @@
-﻿using System.Collections.Generic;
-
-namespace EverlastingStudent.Models
+﻿namespace EverlastingStudent.Models
 {
     using System.ComponentModel.DataAnnotations;
+    using System.Collections.Generic;
 
     using EverlastingStudent.Common.Models;
 

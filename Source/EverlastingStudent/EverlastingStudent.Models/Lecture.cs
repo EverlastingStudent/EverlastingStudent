@@ -1,13 +1,11 @@
-﻿using EverlastingStudent.Common.Models;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace EverlastingStudent.Models
+﻿namespace EverlastingStudent.Models
 {
+    using System;
+    using System.Collections.Generic;
+    using System.ComponentModel.DataAnnotations;
+
+    using EverlastingStudent.Common.Models;
+
     public class Lecture : DeletableEntity
     {
         [Key]

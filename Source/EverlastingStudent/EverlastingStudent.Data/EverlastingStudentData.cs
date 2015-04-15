@@ -1,9 +1,8 @@
-﻿using System.Linq;
-
-namespace EverlastingStudent.Data
+﻿namespace EverlastingStudent.Data
 {
     using System;
     using System.Collections.Generic;
+    using System.Linq;
 
     using EverlastingStudent.Common.Contracts;
     using EverlastingStudent.Data.Repositories;

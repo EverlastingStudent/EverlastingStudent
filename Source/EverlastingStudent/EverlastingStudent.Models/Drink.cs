@@ -1,9 +1,9 @@
-﻿using System.Collections.Generic;
-using EverlastingStudent.Common.Models;
-
-namespace EverlastingStudent.Models
+﻿namespace EverlastingStudent.Models
 {
     using System.ComponentModel.DataAnnotations;
+    using System.Collections.Generic;
+
+    using EverlastingStudent.Common.Models;
 
     public class Drink : DeletableEntity
     {
