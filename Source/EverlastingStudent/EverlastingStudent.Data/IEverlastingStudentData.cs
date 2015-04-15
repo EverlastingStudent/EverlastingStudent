@@ -28,7 +28,9 @@
 
         IGenericRepository<StudentHomework> StudentHomeworks { get; }
 
-        IGenericRepository<StudentInCourses> StudentInCourses { get; }
+        IGenericRepository<StudentCourses> StudentCourses { get; }
+
+        IGenericRepository<StudentLectures> StudentLectures { get; }
 
         int SaveChanges();
     }

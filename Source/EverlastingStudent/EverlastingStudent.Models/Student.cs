@@ -16,7 +16,8 @@
     {
         private ICollection<StudentHomework> studentHomeworks;
         private ICollection<FreelanceProject> studentFreelanceProjects;
-        private ICollection<StudentInCourses> studentInCourses;
+        private ICollection<StudentCourses> studentCourses;
+        private ICollection<StudentLectures> studentLectures;
         private ICollection<HardwarePart> hardwareParts;
         private ICollection<Drink> drinks;
 
@@ -26,7 +27,7 @@
         {
             this.studentHomeworks = new HashSet<StudentHomework>();
             this.studentFreelanceProjects = new HashSet<FreelanceProject>();
-            this.studentInCourses = new HashSet<StudentInCourses>();
+            this.studentCourses = new HashSet<StudentCourses>();
             this.hardwareParts = new HashSet<HardwarePart>();
             this.drinks = new HashSet<Drink>();
         }
@@ -101,10 +102,16 @@
             set { this.studentFreelanceProjects = value; }
         }
 
-        public virtual ICollection<StudentInCourses> StudentInCourses
+        public virtual ICollection<StudentCourses> StudentCourses
         {
-            get { return this.studentInCourses; }
-            set { this.studentInCourses = value; }
+            get { return this.studentCourses; }
+            set { this.studentCourses = value; }
+        }
+
+        public virtual ICollection<StudentLectures> StudentLectures
+        {
+            get { return this.studentLectures; }
+            set { this.studentLectures = value; }
         }
 
         public virtual ICollection<HardwarePart> HardwareParts

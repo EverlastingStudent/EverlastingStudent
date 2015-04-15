@@ -93,6 +93,58 @@
                 }
             }
 
+            var lecture = student.StudentLectures.FirstOrDefault(sl => sl.IsActive);
+            if (lecture != null)
+            {
+                student.IsBusy = false;
+                lecture.IsActive = false;
+                lecture.IsPassed = true;
+
+                this.GiveLectureStats(lecture);
+
+                this.Data.Students.Update(student);
+                this.Data.StudentLectures.Update(lecture);
+                this.Data.SaveChanges();
+            }
+
+            var examStudentLecture = student.StudentCourses.FirstOrDefault(sc => sc.ExamInProgress && sc.IsActive);
+            if (examStudentLecture != null)
+            {
+                student.IsBusy = false;
+                examStudentLecture.ExamInProgress = false;
+                if (student.Experience > examStudentLecture.Course.Exam.RequireExpForExam * 1.4)
+                {
+                    if (Random.NextDouble() < 0.95)
+                    {
+                        bool passedWithExcellence = Random.NextDouble() < 0.8 ? true : false;
+                        this.GiveExamStats(examStudentLecture, passedWithExcellence);
+                        return;
+                    }
+                    return;
+                }
+
+                if (student.Experience > examStudentLecture.Course.Exam.RequireExpForExam * 1.2)
+                {
+                    if (Random.NextDouble() < 0.80)
+                    {
+                        bool passedWithExcellence = Random.NextDouble() < 0.5 ? true : false;
+                        this.GiveExamStats(examStudentLecture, passedWithExcellence);
+                        return;
+                    }
+                    return;
+                }
+
+                if (Random.NextDouble() < 0.60)
+                {
+                    bool passedWithExcellence = Random.NextDouble() < 0.1 ? true : false;
+                    this.GiveExamStats(examStudentLecture, passedWithExcellence);
+                    return;
+                }
+
+                return;
+                
+            }
+
             // add check if other action is inprograss
         }
 
@@ -101,6 +153,26 @@
             student.Knowledge += (long)(homework.KnowledgeGain * student.CoefficientKnowledgeGain);
             student.Experience += (long)(homework.ExperienceGain * student.CoefficientExperienceGain);
             homework.IsSolved = true;
+        }
+
+        private void GiveLectureStats(StudentLectures sl)
+        {
+            long knowledgeGain = (long)(sl.Student.Knowledge * sl.Lecture.CoefficientKnowledgeGain * sl.Student.CoefficientKnowledgeGain);
+            sl.Student.Knowledge += knowledgeGain > 1 ? knowledgeGain : 1L;
+
+            this.Data.StudentLectures.Update(sl);
+            this.Data.SaveChanges();
+        }
+
+        private void GiveExamStats(StudentCourses sc, bool passedWithExcellence)
+        {
+            sc.IsActive = false;
+            sc.IsPassed = true;
+            sc.PassedOn = DateTime.Now;
+            sc.IsPassedWithExcellence = passedWithExcellence;
+
+            this.Data.StudentCourses.Update(sc);
+            this.Data.SaveChanges();
         }
     }
 }

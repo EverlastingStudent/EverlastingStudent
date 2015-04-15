@@ -193,17 +193,17 @@ namespace EverlastingStudent.Data.Migrations
                     new Lecture()
                     {
                          Title = "Introduction to C#",
-                         DurationInMinutes = 5,
+                         DurationInMinutes = 1,
                          CoefficientKnowledgeGain = 0.01
                     },
                     new Lecture(){
                          Title = "Console Input and Output",
-                         DurationInMinutes = 5,
+                         DurationInMinutes = 1,
                          CoefficientKnowledgeGain = 0.01
                     },
                     new Lecture(){
                          Title = "Conditional Statements",
-                         DurationInMinutes = 5,
+                         DurationInMinutes = 1,
                          CoefficientKnowledgeGain = 0.01
                     }
                 },
@@ -341,12 +341,19 @@ namespace EverlastingStudent.Data.Migrations
                 Title = "AngularJS"
             });
 
+            context.SaveChanges();
+
             var count = context.Courses.Count();
 
-            for (int i = 0; i < count - 1; i++)
+            for (int i = 1; i < count; i++)
             {
-                var course = context.Courses.Find(i);
-                course.NextCourseId = i + 1;
+                var course = context.Courses.Where(c => c.Id == i).First();
+                var nextCourse = context.Courses.Where(c => c.Id == i+1).First();
+                if (course == null || nextCourse == null)
+                {
+                    throw new Exception("NEEEEEEEEEEEEEEEEEEEEEEEEEEE");
+                }
+                course.NextCourse = nextCourse;
             }
 
             context.SaveChanges();

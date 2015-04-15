@@ -7,7 +7,7 @@
     using EverlastingStudent.Data;
     using EverlastingStudent.Models;
 
-    [Authorize]
+    
     public class CoursesController : BaseApiController
     {
         public CoursesController(IEverlastingStudentData data, IUserProvider userProvider)
@@ -15,11 +15,12 @@
         {
         }
 
+        [Authorize]
         [HttpGet]
         [ActionName("current")]
         public IHttpActionResult GetCurrentCourse()
         {
-            var courses = this.Data.StudentInCourses.All()
+            var courses = this.Data.StudentCourses.All()
                 .Where(sc => sc.StudentId == this.UserProfile.Id);
 
             Course currentCourse = null;
@@ -51,11 +52,12 @@
             return this.Ok(new { currentCourse.Title });
         }
 
+        [Authorize]
         [HttpGet]
         [ActionName("available")]
         public IHttpActionResult GetAvailableCourse()
         {
-            var studentInCourses = this.Data.StudentInCourses.All()
+            var studentInCourses = this.Data.StudentCourses.All()
                 .Where(sc => sc.StudentId == this.UserProfile.Id);
 
             Course course;
@@ -68,7 +70,7 @@
 
                 if (course == null)
                 {
-                    return this.BadRequest("No courses are available.");
+                    return this.BadRequest("No courses are available. Come back later.");
                 }
             }
             else //student has some courses
@@ -78,7 +80,7 @@
                 if (activeCourse == null)
                 {
                     // student has passed a course - should return the next one
-                    var previousCourse = this.Data.StudentInCourses
+                    var previousCourse = this.Data.StudentCourses
                         .All()
                         .Where(sc => sc.StudentId == this.UserProfile.Id)
                         .OrderByDescending(sc => sc.PassedOn)
@@ -86,6 +88,10 @@
                         .FirstOrDefault();
 
                     course = previousCourse.NextCourse;
+                    if (course == null)
+                    {
+                        return this.BadRequest("No more courses are available. Come back later.");
+                    }
                 }
                 else // student has an active course - no courses are available
                 {
@@ -96,6 +102,7 @@
             return this.Ok(new { course.Title, course.Id });
         }
 
+        [Authorize]
         [HttpPost]
         [ActionName("enroll")]
         public IHttpActionResult EnrollInCourse(int id)
@@ -106,14 +113,14 @@
                 return this.BadRequest("No such course.");
             }
 
-            var activeCourses = this.Data.StudentInCourses.All()
+            var activeCourses = this.Data.StudentCourses.All()
                 .Where(sc => sc.IsActive && sc.StudentId == this.UserProfile.Id);
             if (activeCourses.Any())
             {
                 return this.BadRequest("Cannot enroll in a new course until you pass the current course.");
             }
 
-            var pastCourses = this.Data.StudentInCourses.All()
+            var pastCourses = this.Data.StudentCourses.All()
                 .Where(sc => sc.StudentId == this.UserProfile.Id);
             int? validId;
             if (!pastCourses.Any())
@@ -141,12 +148,13 @@
             }
 
             // enroll student
-            this.Data.StudentInCourses.Add(new StudentInCourses()
+            this.Data.StudentCourses.Add(new StudentCourses()
             {
                 Student = this.UserProfile,
                 Course = selectedCourse,
                 IsActive = true
             });
+
             this.Data.SaveChanges();
 
             return this.Ok();

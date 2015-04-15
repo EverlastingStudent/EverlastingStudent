@@ -76,9 +76,14 @@ namespace EverlastingStudent.Data
             get { return this.GetRepository<StudentHomework>(); }
         }
 
-        public IGenericRepository<StudentInCourses> StudentInCourses
+        public IGenericRepository<StudentCourses> StudentCourses
         {
-            get { return this.GetRepository<StudentInCourses>(); }
+            get { return this.GetRepository<StudentCourses>(); }
+        }
+
+        public IGenericRepository<StudentLectures> StudentLectures
+        {
+            get { return this.GetRepository<StudentLectures>(); }
         }
 
         public int SaveChanges()

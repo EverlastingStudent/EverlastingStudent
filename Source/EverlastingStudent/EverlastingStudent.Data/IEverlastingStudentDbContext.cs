@@ -28,6 +28,10 @@
 
         IDbSet<StudentHomework> StudentHomeworks { get; set; }
 
+        IDbSet<StudentLectures> StudentLectures { get; set; }
+
+        IDbSet<StudentCourses> StudentCourses { get; set; }
+
         IDbSet<TEntity> Set<TEntity>() where TEntity : class;
 
         DbEntityEntry<TEntity> Entry<TEntity>(TEntity entity) where TEntity : class;
