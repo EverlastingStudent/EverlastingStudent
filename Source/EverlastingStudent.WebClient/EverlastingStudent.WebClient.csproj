@@ -179,6 +179,7 @@
     <Content Include="scripts\data.js" />
     <Content Include="styles\reset.css" />
     <Content Include="styles\site.css" />
+    <Content Include="templates\freelanceProjects\forTake.html" />
     <Content Include="templates\home.html" />
     <Content Include="templates\login.html" />
     <Content Include="templates\register.html" />
