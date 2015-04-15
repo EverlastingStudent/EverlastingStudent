@@ -88,11 +88,20 @@ app.data = (function () {
         }
 
         freelanceProjects.prototype.allActive = function () {
-            console.log("HEADERSSS222!!!" + localStorage.getItem('sessionToken'));
             var url = this._serviceUrl + "api/FreelanceProjects/allActive";
             return this._ajaxRequester.get(url, { 'Authorization': localStorage.getItem('sessionToken') })
 				.then(function (data) {
-				    console.log(data);
+				    console.log("Freelance projects successfully loaded");
+				    return data;
+				});
+        };
+
+
+        freelanceProjects.prototype.takeFreelanceProject = function (id) {
+            var url = this._serviceUrl + "api/FreelanceProjects/take/" + id;
+            return this._ajaxRequester.post(url, null, { 'Authorization': localStorage.getItem('sessionToken') })
+				.then(function (data) {
+				    console.log("Freelance project successfully taken.");
 				    return data;
 				});
         };

@@ -27,7 +27,7 @@ var app = app || {};
         }); 
 
 
-        this.get('#/FreelanceProjects', function () {
+        this.get('#/Freelance-projects', function () {
             controller.loadFreelanceProjects(selector);
         });
     });

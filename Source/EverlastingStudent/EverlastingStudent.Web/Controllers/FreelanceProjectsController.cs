@@ -129,7 +129,7 @@ namespace EverlastingStudent.Web.Controllers
                 newFreelanceProject.ProgressInPercentage = 0f;
 
                 this.Data.SaveChanges();
-                return this.Ok(project);
+                return this.Ok(newFreelanceProject);
             }
             catch (Exception e)
             {

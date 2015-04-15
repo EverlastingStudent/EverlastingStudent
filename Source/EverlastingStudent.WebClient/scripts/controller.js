@@ -19,24 +19,73 @@ app.controller = (function () {
 
     BaseController.prototype.loadFreelanceProjects = function (selector) {
         var _this = this;
-        var s = _this._data.freelanceProjects.allActive()
-                .then(function (data) {
-                    console.log(data);
+        _this._data.freelanceProjects.allActive()
+                .then(function (projects) {
+                    var allProjectsContainer = $('<ul>');
+                    for (var projectKey in projects) {
+                        var projectData = {
+                            CloseForTakenDatetime: projects[projectKey].CloseForTakenDatetime,
+                            Content: projects[projectKey].Content,
+                            EnergyCost: projects[projectKey].EnergyCost,
+                            ExperienceGain: projects[projectKey].ExperienceGain,
+                            Id: projects[projectKey].Id,
+                            IsActive: projects[projectKey].IsActive,
+                            MoneyGain: projects[projectKey].MoneyGain,
+                            OpenForTakenDatetime: projects[projectKey].OpenForTakenDatetime,
+                            RequireExperience: projects[projectKey].RequireExperience,
+                            SolveDurabationInHours: projects[projectKey].SolveDurabationInHours,
+                            Title: projects[projectKey].Title,
+                        };
 
-                    //var person = {
-                    //    firstName: "Christophe",
-                    //    lastName: "Coenraets",
-                    //    blogURL: "http://coenraets.org"
-                    //};
-                    //var template = "<h1>{{firstName}} {{lastName}}</h1>Blog: {{blogURL}}";
-                    //var html = Mustache.to_html(template, person);
-                    //$('#sampleArea').html(html);
-                    // redirect
+
+                        //var temlateElem = $(selector).load('./templates/forTake.html');
+                        //console.log(temlateElem.toString());
+                        //var html = Mustache.to_html(temlateElem.toString(), projectData);
+
+                        //$.get('./templates/freelanceProjects/forTake.html', function (template, textStatus, jqXhr) {
+                        //    $(selector).append(Mustache.render($(template).html(), projectData));
+                        //});
+
+                        var template = "<li><p hidden id='projectId'>{{Id}}</p><h3>{{Title}}</h3><section><p>Info:{{Content}}</p><p>Requiredments:</br><span>Tatal energy cost: {{EnergyCost}}</span></br><span>Experience: {{RequireExperience}}</span></br><span>Solve Durabation: {{SolveDurabationInHours}} hours</span></br><span>Active from: {{OpenForTakenDatetime}}</span></br><span>Closed fot taken at: {{CloseForTakenDatetime}}</span></p><p>Obtainments:</br><span>Experience Gain: {{ExperienceGain}}</span></br><span>Money Gain: {{MoneyGain}}</span></p></section></li>";
+                        var projectElement = $(Mustache.to_html(template, projectData));
+
+                        // console.log($(projectElement));
+                        // takeButton
+                        $('<input>')
+                            .attr('class', 'takeButton')
+                            .attr('type', 'button')
+                            .attr('value', 'Take Project')
+                            .click('click', function () {
+                                BaseController.prototype.takeFreelanceProject.call(_this, this.parentElement);
+                            })
+                            .appendTo(projectElement.last());
+
+                        allProjectsContainer.append(projectElement);
+                    }
+
+                    $(selector).append(allProjectsContainer);
                 },
                 function (error) {
                     console.log(error);
                     // body...
                 });
+    };
+
+    BaseController.prototype.takeFreelanceProject = function (projectElement) {
+        var _this = this;
+
+        //console.log(_this.parentElement.firstChild.innerText);
+        var projectId = parseInt(projectElement.firstChild.innerHTML);
+
+        _this._data.freelanceProjects.takeFreelanceProject(projectId)
+                   .then(function (project) {
+                       projectElement.remove();
+                       console.log(project);
+                   },
+                   function (error) {
+                       console.log(error);
+                       // body...
+                   });
     };
 
     BaseController.prototype.attachEventHandlers = function () {
@@ -54,7 +103,7 @@ app.controller = (function () {
 				.then(function (data) {
 				    console.log("Logged in successfully");
 				    // redirect
-				    app.router.setLocation('#/FreelanceProjects');
+				    app.router.setLocation('#/Freelance-projects');
 				},
 				function (error) {
 				    // body...
