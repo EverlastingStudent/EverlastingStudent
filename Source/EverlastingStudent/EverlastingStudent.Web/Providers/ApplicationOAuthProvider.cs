@@ -2,10 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
-    using System.Security.Claims;
     using System.Threading.Tasks;
-
-    using EverlastingStudent.Models;
 
     using Microsoft.AspNet.Identity.Owin;
     using Microsoft.Owin.Security;
@@ -14,7 +11,7 @@
 
     public class ApplicationOAuthProvider : OAuthAuthorizationServerProvider
     {
-        private readonly string _publicClientId;
+        private readonly string publicClientId;
 
         public ApplicationOAuthProvider(string publicClientId)
         {
@@ -23,14 +20,14 @@
                 throw new ArgumentNullException("publicClientId");
             }
 
-            _publicClientId = publicClientId;
+            this.publicClientId = publicClientId;
         }
 
         public override async Task GrantResourceOwnerCredentials(OAuthGrantResourceOwnerCredentialsContext context)
         {
             var userManager = context.OwinContext.GetUserManager<ApplicationUserManager>();
 
-            Student user = await userManager.FindAsync(context.UserName, context.Password);
+            var user = await userManager.FindAsync(context.UserName, context.Password);
 
             if (user == null)
             {
@@ -38,20 +35,20 @@
                 return;
             }
 
-            ClaimsIdentity oAuthIdentity = await user.GenerateUserIdentityAsync(userManager,
+            var oAuthIdentity = await user.GenerateUserIdentityAsync(userManager,
                OAuthDefaults.AuthenticationType);
-            ClaimsIdentity cookiesIdentity = await user.GenerateUserIdentityAsync(userManager,
+            var cookiesIdentity = await user.GenerateUserIdentityAsync(userManager,
                 CookieAuthenticationDefaults.AuthenticationType);
 
-            AuthenticationProperties properties = CreateProperties(user.UserName);
-            AuthenticationTicket ticket = new AuthenticationTicket(oAuthIdentity, properties);
+            var properties = CreateProperties(user.UserName);
+            var ticket = new AuthenticationTicket(oAuthIdentity, properties);
             context.Validated(ticket);
             context.Request.Context.Authentication.SignIn(cookiesIdentity);
         }
 
         public override Task TokenEndpoint(OAuthTokenEndpointContext context)
         {
-            foreach (KeyValuePair<string, string> property in context.Properties.Dictionary)
+            foreach (var property in context.Properties.Dictionary)
             {
                 context.AdditionalResponseParameters.Add(property.Key, property.Value);
             }
@@ -72,9 +69,9 @@
 
         public override Task ValidateClientRedirectUri(OAuthValidateClientRedirectUriContext context)
         {
-            if (context.ClientId == _publicClientId)
+            if (context.ClientId == this.publicClientId)
             {
-                Uri expectedRootUri = new Uri(context.Request.Uri, "/");
+                var expectedRootUri = new Uri(context.Request.Uri, "/");
 
                 if (expectedRootUri.AbsoluteUri == context.RedirectUri)
                 {

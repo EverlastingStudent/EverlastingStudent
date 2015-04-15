@@ -1,15 +1,12 @@
-﻿using EverlastingStudent.Common.Infrastructure;
-using EverlastingStudent.Data;
-using EverlastingStudent.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Net.Http;
-using System.Web.Http;
-
-namespace EverlastingStudent.Web.Controllers
+﻿namespace EverlastingStudent.Web.Controllers
 {
+    using System.Linq;
+    using System.Web.Http;
+
+    using EverlastingStudent.Common.Infrastructure;
+    using EverlastingStudent.Data;
+    using EverlastingStudent.Models;
+
     [Authorize]
     public class CoursesController : BaseApiController
     {
@@ -76,18 +73,18 @@ namespace EverlastingStudent.Web.Controllers
             }
             else //student has some courses
             {
-                var activeCourse = studentInCourses
-                    .Where(sc => sc.IsActive)
-                    .FirstOrDefault();
+                var activeCourse = studentInCourses.FirstOrDefault(sc => sc.IsActive);
 
                 if (activeCourse == null)
                 {
                     // student has passed a course - should return the next one
-                    var previousCourse = this.Data.StudentInCourses.All()
+                    var previousCourse = this.Data.StudentInCourses
+                        .All()
                         .Where(sc => sc.StudentId == this.UserProfile.Id)
                         .OrderByDescending(sc => sc.PassedOn)
                         .Select(sc => sc.Course)
                         .FirstOrDefault();
+
                     course = previousCourse.NextCourse;
                 }
                 else // student has an active course - no courses are available

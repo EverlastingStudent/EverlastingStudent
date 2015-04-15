@@ -1,12 +1,11 @@
-﻿using System.Web.Http.Cors;
-
-namespace EverlastingStudent.Web.Controllers
+﻿namespace EverlastingStudent.Web.Controllers
 {
     using System;
     using System.Linq;
     using System.Web.Http;
-    using Data;
+
     using EverlastingStudent.Common.Infrastructure;
+    using EverlastingStudent.Data;
     using EverlastingStudent.Models.FreelanceProjects;
 
     [Authorize]

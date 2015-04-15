@@ -1,14 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Net.Http;
-using System.Web.Http;
-using EverlastingStudent.Common.Infrastructure;
-using EverlastingStudent.Data;
-
-namespace EverlastingStudent.Web.Controllers
+﻿namespace EverlastingStudent.Web.Controllers
 {
+    using System;
+    using System.Linq;
+    using System.Web.Http;
+
+    using EverlastingStudent.Common.Infrastructure;
+    using EverlastingStudent.Data;
+
     [Authorize]
     public class DrinksController : BaseApiController
     {
@@ -20,8 +18,8 @@ namespace EverlastingStudent.Web.Controllers
         [HttpGet]
         public IHttpActionResult GetNames()
         {
-            var drinks = this.Data.Drinks.All().Select(d => new { Id = d.Id, Name = d.Name, Energy = d.EnergyBonus, Cost = d.MoneyCost });
-            if (drinks == null)
+            var drinks = this.Data.Drinks.All().Select(d => new {d.Id, d.Name, Energy = d.EnergyBonus, Cost = d.MoneyCost });
+            if (drinks.Any())
             {
                 return this.BadRequest("There are no drinks to display");
             }
@@ -32,7 +30,16 @@ namespace EverlastingStudent.Web.Controllers
         [HttpGet]
         public IHttpActionResult GetDrink(int id)
         {
-            var drink = this.Data.Drinks.All().Select(d => new { Id = d.Id, Name = d.Name, Energy = d.EnergyBonus, Cost = d.MoneyCost }).FirstOrDefault(d => d.Id == id);
+            var drink = this.Data.Drinks
+                .All()
+                .Select(d => new
+                {
+                    d.Id, 
+                    d.Name, 
+                    Energy = d.EnergyBonus, 
+                    Cost = d.MoneyCost
+                })
+                .FirstOrDefault(d => d.Id == id);
             if (drink == null)
             {
                 return this.BadRequest("There is no drink !");
@@ -44,7 +51,7 @@ namespace EverlastingStudent.Web.Controllers
         [HttpGet]
         public IHttpActionResult GetByUser()
         {
-            var drinks = this.UserProfile.Drinks.Select(d => new { Name = d.Name, Energy = d.EnergyBonus, Cost = d.MoneyCost }).Any();
+            var drinks = this.UserProfile.Drinks.Select(d => new {d.Name, Energy = d.EnergyBonus, Cost = d.MoneyCost }).Any();
 
             if (drinks == null)
             {
@@ -90,7 +97,7 @@ namespace EverlastingStudent.Web.Controllers
             {
                 return BadRequest("No such drink exists");
             }
-            if (drink.IsDeleted == true)
+            if (drink.IsDeleted)
             {
                 return this.BadRequest("You have already used that drink");
             }
