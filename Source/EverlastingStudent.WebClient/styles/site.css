@@ -6,9 +6,9 @@ body {
     text-align: center;
 }
 
-#logo img {
-    width: 128px;
-}
+    #logo img {
+        width: 128px;
+    }
 
 header h1 {
     margin-top: 37px;
@@ -37,11 +37,11 @@ div.jumbotron {
 }
 
 .top-buffer {
-    margin-top:20px;
+    margin-top: 20px;
 }
 
 .bottom-buffer {
-    margin-bottom:20px;
+    margin-bottom: 20px;
 }
 
 .well {
@@ -60,7 +60,8 @@ div.jumbotron {
 }
 
 #register-form {
-    width: 80%; color: #fff;
+    width: 80%;
+    color: #fff;
     margin: 120px auto;
     background-color: #234465;
     padding: 30px;
@@ -68,3 +69,22 @@ div.jumbotron {
     -moz-border-radius: 10px;
     border-radius: 10px;
 }
+
+#myFreelanceProjectsCointainer, #availableFreelanceProjectsCointainer {
+    display: inline-block;
+    vertical-align: top;
+    margin: 10px 20px;
+    background-color: #c0c0c0;
+    padding: 5px;
+}
+
+#myProjectUl, #allAvailableProjectUl {
+    padding: 5px;
+}
+
+    #myProjectUl li, #allAvailableProjectUl li {
+        border: 1px slategray solid;
+        background-color: #fffafa;
+        padding: 10px;
+        margin: 10px;
+    }
