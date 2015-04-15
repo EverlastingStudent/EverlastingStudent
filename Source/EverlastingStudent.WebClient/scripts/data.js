@@ -1,86 +1,108 @@
 var app = app || {};
 
 app.data = (function () {
-	function Data (baseUrl, ajaxRequester) {
-		this.users = new Users(baseUrl, ajaxRequester);
-	}
+    function Data(baseUrl, ajaxRequester) {
+        this.users = new Users(baseUrl, ajaxRequester);
+        this.freelanceProjects = new freelanceProjects(baseUrl, ajaxRequester);
+    }
 
-	var cradentials = (function () {
-		var headers = {
-			'Authorization': getSessionToken()
-		}
+    var cradentials = (function () {
+        var headers = {
+            'Authorization': getSessionToken()
+        }
 
-		function getSessionToken() {
-			localStorage.getItem('sessionToken');
-		}
+        function getSessionToken() {
+            localStorage.getItem('sessionToken');
+        }
 
-		function setSessionToken(sessionToken) {
-			localStorage.setItem('sessionToken', 'Bearer ' + sessionToken);
-		}
+        function setSessionToken(sessionToken) {
+            localStorage.setItem('sessionToken', 'Bearer ' + sessionToken);
+        }
 
-		function getUsername(sessionToken) {
-			localStorage.getItem('username');		}
+        function getUsername(username) {
+            localStorage.getItem('username');
+        }
 
-		function setUsername(sessionToken) {
-			localStorage.setItem('username', sessionToken);
-		}
+        function setUsername(username) {
+            localStorage.setItem('username', username);
+        }
 
-		function getHeaders() {
-			return headers;
-		}
+        function getHeaders() {
+            return headers;
+        }
 
-		return {
-			getSessionToken: getSessionToken,
-			setSessionToken: setSessionToken,
-			getUsername: getUsername,
-			setUsername: setUsername,
-			getHeaders: getHeaders
-		}
-	}());
+        return {
+            getSessionToken: getSessionToken,
+            setSessionToken: setSessionToken,
+            getUsername: getUsername,
+            setUsername: setUsername,
+            getHeaders: getHeaders
+        }
+    }());
 
-	var Users = (function (argument) {
-		function Users(baseUrl, ajaxRequester) {
-			this._serviceUrl = baseUrl;
-			this._ajaxRequester = ajaxRequester;
-			this._headers = cradentials.getHeaders();
-		}
+    var Users = (function (argument) {
+        function Users(baseUrl, ajaxRequester) {
+            this._serviceUrl = baseUrl;
+            this._ajaxRequester = ajaxRequester;
+            this._headers = cradentials.getHeaders();
+        }
 
-		Users.prototype.login = function (username, password) {
-			var url = this._serviceUrl + 'token';
-			var data = {'userName' : username, 'Password' : password, 'grant_type' : 'password'}
-			return this._ajaxRequester.post(url, data, this._headers)
+        Users.prototype.login = function (username, password) {
+            var url = this._serviceUrl + 'token';
+            var data = { 'userName': username, 'Password': password, 'grant_type': 'password' }
+            return this._ajaxRequester.post(url, data, this._headers)
 				.then(function (data) {
-					cradentials.setSessionToken(data.access_token);
-					cradentials.setUsername(data.userName);
-					return data;
+				    cradentials.setSessionToken(data.access_token);
+				    cradentials.setUsername(data.userName);
+				    return data;
 				});
-		};
+        };
 
-		Users.prototype.register = function (username, password, confirmPassword, playerType) {
-			var user =  {
-				Email: username,
-				Password: password,
-				ConfirmPassword : confirmPassword,
-				PlayerType : playerType
-			};
-			var url = this._serviceUrl + 'api/Account/Register';
-			return this._ajaxRequester.post(url, user, this._headers)
+        Users.prototype.register = function (username, password, confirmPassword, playerType) {
+            var user = {
+                Email: username,
+                Password: password,
+                ConfirmPassword: confirmPassword,
+                PlayerType: playerType
+            };
+            var url = this._serviceUrl + 'api/Account/Register';
+            return this._ajaxRequester.post(url, user, this._headers)
 				.then(function (data) {
-					cradentials.setSessionToken(data.sessionToken);
-					return data;
+				    cradentials.setSessionToken(data.sessionToken);
+				    return data;
 				});
-		};
+        };
 
-		Users.prototype.validateToken = function (accessToken) {
-			// body...
-		};
+        Users.prototype.validateToken = function (accessToken) {
+            // body...
+        };
 
-		return Users;
-	}());
+        return Users;
+    }());
 
-	return {
-		get: function (baseUrl, ajaxRequester) {
-			return new Data(baseUrl, ajaxRequester);
-		}
-	}
+    var freelanceProjects = (function (argument) {
+        function freelanceProjects(baseUrl, ajaxRequester) {
+            this._serviceUrl = baseUrl;
+            this._ajaxRequester = ajaxRequester;
+            this._headers = cradentials.getHeaders();
+        }
+
+        freelanceProjects.prototype.allActive = function () {
+            console.log("HEADERSSS222!!!" + localStorage.getItem('sessionToken'));
+            var url = this._serviceUrl + "api/FreelanceProjects/allActive";
+            return this._ajaxRequester.get(url, { 'Authorization': localStorage.getItem('sessionToken') })
+				.then(function (data) {
+				    console.log(data);
+				    return data;
+				});
+        };
+
+        return freelanceProjects;
+    }());
+
+    return {
+        get: function (baseUrl, ajaxRequester) {
+            return new Data(baseUrl, ajaxRequester);
+        }
+    }
 }());

@@ -1,4 +1,6 @@
-﻿namespace EverlastingStudent.Web.Controllers
+﻿using System.Web.Http.Cors;
+
+namespace EverlastingStudent.Web.Controllers
 {
     using System;
     using System.Linq;

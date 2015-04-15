@@ -1,4 +1,6 @@
-﻿namespace EverlastingStudent.Web.Controllers
+﻿using System.Web.Http.Cors;
+
+namespace EverlastingStudent.Web.Controllers
 {
     using System;
     using System.Linq;
@@ -20,12 +22,12 @@
         [ActionName("allActive")]
         public IHttpActionResult GetAllActiveProjects()
         {
-            if (this.UserProfile.LastFreelanceProjectSearchDateTime != null && (DateTime.Now - (DateTime)this.UserProfile.LastFreelanceProjectSearchDateTime).Hours < 24)
-            {
-                return this.BadRequest(
-                     "You can search once for 24 hours. Next search will be available after: " +
-                     string.Format("{0:hh\\:mm\\:ss}", DateTime.Now.AddHours(-24) - (DateTime)this.UserProfile.LastFreelanceProjectSearchDateTime));
-            }
+            //if (this.UserProfile.LastFreelanceProjectSearchDateTime != null && (DateTime.Now - (DateTime)this.UserProfile.LastFreelanceProjectSearchDateTime).Hours < 24)
+            //{
+            //    return this.BadRequest(
+            //         "You can search once for 24 hours. Next search will be available after: " +
+            //         string.Format("{0:hh\\:mm\\:ss}", DateTime.Now.AddHours(-24) - (DateTime)this.UserProfile.LastFreelanceProjectSearchDateTime));
+            //}
 
             var studentBaseProject = this.UserProfile.FreelanceProjects.Select(y => y.BaseFreelanceProjectId);
             var rnd = new Random();

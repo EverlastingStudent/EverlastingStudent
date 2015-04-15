@@ -1,7 +1,7 @@
 var app = app || {};
 
 app.ajaxRequester = (function () {
-	function AjaxRequester() {
+	function ajaxRequester() {
 		this.get = makeGetRequest;
 		this.post = makePostRequest;
 		this.put = makePutRequest;
@@ -11,19 +11,19 @@ app.ajaxRequester = (function () {
 	var makeRequest = function (url, method, data, headers) {
 		var defer = Q.defer();
 
-		$.ajax({
-			url:url,
-			method: method,
-			contentType: 'application/x-www-form-urlencoded',
-			data: data || undefined,
-			headers: headers,
-			success: function (data) {
-				defer.resolve(data);
-			},
-			error: function (error) {
-				defer.reject(error);
-			}
-		})
+	    $.ajax({
+	        url: url,
+	        method: method,
+	        contentType: 'application/x-www-form-urlencoded',
+	        data: data || undefined,
+	        headers: headers,
+	        success: function(response) {
+	            defer.resolve(response);
+	        },
+	        error: function(error) {
+	            defer.reject(error);
+	        }
+	    });
 
 		return defer.promise;
 	}
@@ -47,7 +47,7 @@ app.ajaxRequester = (function () {
 
 	return {
 		get: function () {
-			return new AjaxRequester();
+			return new ajaxRequester();
 		}
 	}
 }());
