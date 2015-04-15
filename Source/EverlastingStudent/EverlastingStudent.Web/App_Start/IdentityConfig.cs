@@ -35,11 +35,13 @@
                 RequireLowercase = false,
                 RequireUppercase = false,
             };
+
             var dataProtectionProvider = options.DataProtectionProvider;
             if (dataProtectionProvider != null)
             {
                 manager.UserTokenProvider = new DataProtectorTokenProvider<Student>(dataProtectionProvider.Create("ASP.NET Identity"));
             }
+
             return manager;
         }
     }

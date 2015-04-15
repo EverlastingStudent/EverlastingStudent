@@ -16,7 +16,6 @@
     using EverlastingStudent.Web.Providers;
     using EverlastingStudent.Web.Results;
 
-    using Microsoft.Ajax.Utilities;
     using Microsoft.AspNet.Identity;
     using Microsoft.AspNet.Identity.Owin;
     using Microsoft.Owin.Security;

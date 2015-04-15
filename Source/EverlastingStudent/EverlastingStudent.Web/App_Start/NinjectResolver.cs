@@ -8,11 +8,13 @@
     System.Web.Mvc.IDependencyResolver
     {
         private readonly IKernel kernel;
+
         public NinjectResolver(IKernel kernel)
             : base(kernel)
         {
             this.kernel = kernel;
         }
+
         public IDependencyScope BeginScope()
         {
             return new NinjectScope(this.kernel.BeginBlock());

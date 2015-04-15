@@ -1,14 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Net.Http;
-using System.Web.Http;
-using EverlastingStudent.Common.Infrastructure;
-using EverlastingStudent.Data;
-
-namespace EverlastingStudent.Web.Controllers
+﻿namespace EverlastingStudent.Web.Controllers
 {
+    using System;
+    using System.Linq;
+    using System.Web.Http;
+
+    using EverlastingStudent.Common.Infrastructure;
+    using EverlastingStudent.Data;
+
     [Authorize]
     public class HardwaresController : BaseApiController
     {
@@ -20,8 +18,8 @@ namespace EverlastingStudent.Web.Controllers
         [HttpGet]
         public IHttpActionResult GetNames()
         {
-            var hardware = this.Data.HardwareParts.All().Select(d => new { Id = d.Id, Name = d.Name, Cost = d.MoneyCost });
-            if (hardware == null)
+            var hardware = this.Data.HardwareParts.All().Select(d => new {d.Id, d.Name, Cost = d.MoneyCost });
+            if (hardware.Any())
             {
                 return this.BadRequest("There are no hardware parts to display");
             }
@@ -44,11 +42,14 @@ namespace EverlastingStudent.Web.Controllers
         [HttpGet]
         public IHttpActionResult GetByUser()
         {
-            var hardware = this.UserProfile.HardwareParts.Select(d => new { Name = d.Name, Energy = d.CoefficientEnergyBonus, Cost = d.MoneyCost }).Any();
+            var hardware =
+                this.UserProfile.HardwareParts.Select(
+                    d => new {d.Name, Energy = d.CoefficientEnergyBonus, Cost = d.MoneyCost});
 
-            if (hardware == null)
+
+            if (hardware.Any())
             {
-                return BadRequest("Current user has no drinks");
+                return this.BadRequest("Current user has no drinks");
             }
 
             return this.Ok(hardware);
@@ -61,18 +62,18 @@ namespace EverlastingStudent.Web.Controllers
             var hardware = this.Data.HardwareParts.All().FirstOrDefault(d => d.Id == id);
             if (hardware == null)
             {
-                return BadRequest("No such hardware exists");
+                return this.BadRequest("No such hardware exists");
             }
 
             var hasSuchHardware = this.UserProfile.HardwareParts.FirstOrDefault(d => d.Id == id);
             if (hasSuchHardware != null)
             {
-                return BadRequest("You already have such a hardware");
+                return this.BadRequest("You already have such a hardware");
             }
 
             if (this.UserProfile.Money < hardware.MoneyCost)
             {
-                return BadRequest("This hardware is too expensive for you !");
+                return this.BadRequest("This hardware is too expensive for you !");
             }
 
 
@@ -88,9 +89,9 @@ namespace EverlastingStudent.Web.Controllers
             var hardware = this.UserProfile.HardwareParts.FirstOrDefault(d => d.Id == id);
             if (hardware == null)
             {
-                return BadRequest("No such hardware exists");
+                return this.BadRequest("No such hardware exists");
             }
-            if (hardware.IsDeleted == true)
+            if (hardware.IsDeleted)
             {
                 return this.BadRequest("You have already used that hardware");
             }

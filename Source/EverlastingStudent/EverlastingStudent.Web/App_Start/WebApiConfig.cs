@@ -1,11 +1,7 @@
-﻿
-
-
-
-namespace EverlastingStudent.Web
+﻿namespace EverlastingStudent.Web
 {
     using System.Web.Http;
-    using System.Web.Http.Cors;
+
     using Microsoft.Owin.Security.OAuth;
 
     public static class WebApiConfig

@@ -40,6 +40,7 @@
                     Cost = d.MoneyCost
                 })
                 .FirstOrDefault(d => d.Id == id);
+
             if (drink == null)
             {
                 return this.BadRequest("There is no drink !");
@@ -51,11 +52,11 @@
         [HttpGet]
         public IHttpActionResult GetByUser()
         {
-            var drinks = this.UserProfile.Drinks.Select(d => new {d.Name, Energy = d.EnergyBonus, Cost = d.MoneyCost }).Any();
+            var drinks = this.UserProfile.Drinks.Select(d => new {d.Name, Energy = d.EnergyBonus, Cost = d.MoneyCost });
 
-            if (drinks == null)
+            if (drinks.Any())
             {
-                return BadRequest("Current user has no drinks");
+                return this.BadRequest("Current user has no drinks");
             }
 
             return this.Ok(drinks);
@@ -68,18 +69,18 @@
             var drink = this.Data.Drinks.All().FirstOrDefault(d => d.Id == id);
             if (drink == null)
             {
-                return BadRequest("No such drink exists");
+                return this.BadRequest("No such drink exists");
             }
 
             var hasSuchDrink = this.UserProfile.Drinks.FirstOrDefault(d => d.Id == id);
             if (hasSuchDrink != null)
             {
-                return BadRequest("You already have such a drink");
+                return this.BadRequest("You already have such a drink");
             }
 
             if (this.UserProfile.Money < drink.MoneyCost)
             {
-                return BadRequest("This drink is too expensive for you !");
+                return this.BadRequest("This drink is too expensive for you !");
             }
 
 
@@ -95,7 +96,7 @@
             var drink = this.UserProfile.Drinks.FirstOrDefault(d => d.Id == id);
             if (drink == null)
             {
-                return BadRequest("No such drink exists");
+                return this.BadRequest("No such drink exists");
             }
             if (drink.IsDeleted)
             {

@@ -1,9 +1,7 @@
-﻿using System;
-using System.ComponentModel.DataAnnotations;
-using Newtonsoft.Json;
-
-namespace EverlastingStudent.Web.Models
+﻿namespace EverlastingStudent.Web.Models
 {
+    using System.ComponentModel.DataAnnotations;
+
     using EverlastingStudent.Common.Models;
 
     // Models used as parameters to AccountController actions.
