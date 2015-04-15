@@ -30,6 +30,14 @@ var app = app || {};
         this.get('#/Freelance-projects', function () {
             controller.loadFreelanceProjects(selector);
         });
+
+        this.get('#/drinks', function () {
+            controller.loadDrinks(selector);
+        });
+
+        this.get('#/hardware', function () {
+            controller.loadHardwareParts(selector);
+        });
     });
 
     app.router.run('#/');

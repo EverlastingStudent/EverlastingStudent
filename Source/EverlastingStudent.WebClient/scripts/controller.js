@@ -88,6 +88,164 @@ app.controller = (function () {
                    });
     };
 
+    BaseController.prototype.loadDrinks = function (selector) {
+        var _this = this;
+        _this._data.drinks.names()
+                .then(function (drinks) {
+                    var drinksContainer = $('<ul>');
+                    for (var drinkKey in drinks) {
+                        var drinkData = {
+                            Name: drinks[drinkKey].Name,
+                            Cost: drinks[drinkKey].Cost
+                        };
+
+                        var template = "<li><p hidden id='drinkId'>{{Id}}</p><h3>{{Name}}</h3><section><p>Cost:{{Cost}}</p></section></li>";
+                        var drinkElement = $(Mustache.to_html(template, drinkData));
+
+                        $('<input>')
+                            .attr('class', 'takeButton')
+                            .attr('type', 'button')
+                            .attr('value', 'Get Drink')
+                            .click('click', function () {
+                                BaseController.prototype.getDrink.call(_this, this.parentElement);
+                            })
+                            .appendTo(drinkElement.last());
+
+                        drinksContainer.append(drinkElement);
+
+                        $('<input>')
+                            .attr('class', 'takeButton')
+                            .attr('type', 'button')
+                            .attr('value', 'Buy Drink')
+                            .click('click', function () {
+                                BaseController.prototype.buyDrink.call(_this, this.parentElement);
+                            })
+                            .appendTo(drinkElement.last());
+
+                        drinksContainer.append(drinkElement);
+                    }
+
+                    $(selector).append(drinksContainer);
+                },
+                function (error) {
+                    console.log(error);
+                    // body...
+                });
+    };
+
+    BaseController.prototype.loadHardwareParts = function (selector) {
+        var _this = this;
+        _this._data.hardwareParts.names()
+                .then(function (hardwareParts) {
+                    var hardwareContainer = $('<ul>');
+                    for (var hardwareKey in hardwareParts) {
+                        var hardwareData = {
+                            Name: hardwareParts[hardwareKey].Name,
+                            Cost: hardwareParts[hardwareKey].Cost
+                        };
+
+                        var template = "<li><p hidden id='drinkId'>{{Id}}</p><h3>{{Name}}</h3><section><p>Cost:{{Cost}}</p><p>Energy:{{Energy}}</p></section></li>";
+                        var hardwareElement = $(Mustache.to_html(template, hardwareData));
+
+                        $('<input>')
+                            .attr('class', 'takeButton')
+                            .attr('type', 'button')
+                            .attr('value', 'Get Hardware')
+                            .click('click', function () {
+                                BaseController.prototype.getHardware.call(_this, this.parentElement);
+                            })
+                            .appendTo(hardwareElement.last());
+
+                        hardwareContainer.append(hardwareElement);
+
+                        $('<input>')
+                            .attr('class', 'takeButton')
+                            .attr('type', 'button')
+                            .attr('value', 'Buy Hardware')
+                            .click('click', function () {
+                                BaseController.prototype.buyHardware.call(_this, this.parentElement);
+                            })
+                            .appendTo(hardwareElement.last());
+
+                        hardwareContainer.append(hardwareElement);
+                    }
+
+                    $(selector).append(hardwareContainer);
+                },
+                function (error) {
+                    console.log(error);
+                    // body...
+                });
+    };
+
+    BaseController.prototype.getDrink = function (drinkElement) {
+        var _this = this;
+
+        //console.log(_this.parentElement.firstChild.innerText);
+        var drinkId = parseInt(drinkElement.firstChild.innerHTML);
+
+        _this._data.drinks.takeDrink(drinkId)
+                   .then(function (drink) {
+                       projectElement.remove();
+                       console.log(drink);
+                   },
+                   function (error) {
+                       console.log(error);
+                       // body...
+                   });
+    };
+
+    BaseController.prototype.buyDrink = function (drinkElement) {
+        var _this = this;
+
+        //console.log(_this.parentElement.firstChild.innerText);
+        var drinkId = parseInt(drinkElement.firstChild.innerHTML);
+
+        _this._data.drinks.buyDrink(drinkId)
+                   .then(function (drink) {
+                       projectElement.remove();
+                       console.log(drink);
+                   },
+                   function (error) {
+                       console.log(error);
+                       // body...
+                   });
+    };
+
+    BaseController.prototype.getHardware = function (hardwareElement) {
+        var _this = this;
+
+        //console.log(_this.parentElement.firstChild.innerText);
+        var hardwareId = parseInt(hardwareElement.firstChild.innerHTML);
+
+        _this._data.hardwareParts.takeHardware(hardwareId)
+                   .then(function (hardware) {
+                       projectElement.remove();
+                       console.log(hardware);
+                   },
+                   function (error) {
+                       console.log(error);
+                       // body...
+                   });
+    };
+
+    BaseController.prototype.buyHardware = function (hardwareElement) {
+        var _this = this;
+
+        //console.log(_this.parentElement.firstChild.innerText);
+        var drinkId = parseInt(hardwareElement.firstChild.innerHTML);
+
+        _this._data.hardwareParts.buyHardware(hardwareId)
+                   .then(function (hardware) {
+                       projectElement.remove();
+                       console.log(hardware);
+                   },
+                   function (error) {
+                       console.log(error);
+                       // body...
+                   });
+    };
+
     BaseController.prototype.attachEventHandlers = function () {
         var selector = '#wrapper';
         attachLoginHandler.call(this, selector);
