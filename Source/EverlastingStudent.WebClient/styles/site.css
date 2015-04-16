@@ -70,7 +70,7 @@ div.jumbotron {
     border-radius: 10px;
 }
 
-#myFreelanceProjectsCointainer, #availableFreelanceProjectsCointainer {
+#myProjectsDiv, #availableFreelanceProjectsCointainer {
     display: inline-block;
     vertical-align: top;
     margin: 10px 20px;
