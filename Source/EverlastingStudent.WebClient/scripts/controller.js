@@ -389,7 +389,7 @@ app.controller = (function () {
 				.then(function (data) {
 				    console.log("Logged in successfully");
 				    // redirect
-				    app.router.setLocation('#/Freelance-projects');
+				    //app.router.setLocation('#/Freelance-projects');
 				},
 				function (error) {
 				    // body...

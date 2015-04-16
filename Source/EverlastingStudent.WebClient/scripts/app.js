@@ -30,7 +30,7 @@ var app = app || {};
             controller.loadHomework(selector);
         });
 
-        this.get('#/Freelance-projects', function () {
+        this.get('#/freelance-projects', function () {
             controller.loadFreelanceProjects(selector);
         });
 
