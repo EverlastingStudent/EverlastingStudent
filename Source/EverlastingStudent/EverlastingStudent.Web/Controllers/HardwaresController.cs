@@ -1,9 +1,11 @@
 ﻿namespace EverlastingStudent.Web.Controllers
 {
     using System;
+    using System.Collections.Generic;
     using System.Linq;
+    using System.Net;
+    using System.Net.Http;
     using System.Web.Http;
-
     using EverlastingStudent.Common.Infrastructure;
     using EverlastingStudent.Data;
 
@@ -18,8 +20,8 @@
         [HttpGet]
         public IHttpActionResult GetNames()
         {
-            var hardware = this.Data.HardwareParts.All().Select(d => new {d.Id, d.Name, Cost = d.MoneyCost });
-            if (hardware.Any())
+            var hardware = this.Data.HardwareParts.All().Select(d => new { Id = d.Id, Name = d.Name, Cost = d.MoneyCost });
+            if (hardware == null)
             {
                 return this.BadRequest("There are no hardware parts to display");
             }
@@ -42,14 +44,11 @@
         [HttpGet]
         public IHttpActionResult GetByUser()
         {
-            var hardware =
-                this.UserProfile.HardwareParts.Select(
-                    d => new {d.Name, Energy = d.CoefficientEnergyBonus, Cost = d.MoneyCost});
+            var hardware = this.UserProfile.HardwareParts.Select(d => new { Name = d.Name, Energy = d.CoefficientEnergyBonus, Cost = d.MoneyCost }).Any();
 
-
-            if (hardware.Any())
+            if (hardware == null)
             {
-                return this.BadRequest("Current user has no drinks");
+                return BadRequest("Current user has no drinks");
             }
 
             return this.Ok(hardware);
@@ -62,18 +61,18 @@
             var hardware = this.Data.HardwareParts.All().FirstOrDefault(d => d.Id == id);
             if (hardware == null)
             {
-                return this.BadRequest("No such hardware exists");
+                return BadRequest("No such hardware exists");
             }
 
             var hasSuchHardware = this.UserProfile.HardwareParts.FirstOrDefault(d => d.Id == id);
             if (hasSuchHardware != null)
             {
-                return this.BadRequest("You already have such a hardware");
+                return BadRequest("You already have such a hardware");
             }
 
             if (this.UserProfile.Money < hardware.MoneyCost)
             {
-                return this.BadRequest("This hardware is too expensive for you !");
+                return BadRequest("This hardware is too expensive for you !");
             }
 
 
@@ -89,9 +88,9 @@
             var hardware = this.UserProfile.HardwareParts.FirstOrDefault(d => d.Id == id);
             if (hardware == null)
             {
-                return this.BadRequest("No such hardware exists");
+                return BadRequest("No such hardware exists");
             }
-            if (hardware.IsDeleted)
+            if (hardware.IsDeleted == true)
             {
                 return this.BadRequest("You have already used that hardware");
             }

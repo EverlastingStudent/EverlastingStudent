@@ -1,9 +1,8 @@
-﻿using System.Linq;
-
-namespace EverlastingStudent.Data
+﻿namespace EverlastingStudent.Data
 {
     using System;
     using System.Collections.Generic;
+    using System.Linq;
 
     using EverlastingStudent.Common.Contracts;
     using EverlastingStudent.Data.Repositories;
@@ -76,9 +75,14 @@ namespace EverlastingStudent.Data
             get { return this.GetRepository<StudentHomework>(); }
         }
 
-        public IGenericRepository<StudentInCourses> StudentInCourses
+        public IGenericRepository<StudentCourses> StudentCourses
         {
-            get { return this.GetRepository<StudentInCourses>(); }
+            get { return this.GetRepository<StudentCourses>(); }
+        }
+
+        public IGenericRepository<StudentLectures> StudentLectures
+        {
+            get { return this.GetRepository<StudentLectures>(); }
         }
 
         public int SaveChanges()

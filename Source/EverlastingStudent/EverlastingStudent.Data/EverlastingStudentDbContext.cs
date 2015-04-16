@@ -35,6 +35,10 @@
 
         public IDbSet<StudentHomework> StudentHomeworks { get; set; }
 
+        public IDbSet<StudentLectures> StudentLectures { get; set; }
+
+        public IDbSet<StudentCourses> StudentCourses { get; set; }
+
         public static EverlastingStudentDbContext Create()
         {
             return new EverlastingStudentDbContext();

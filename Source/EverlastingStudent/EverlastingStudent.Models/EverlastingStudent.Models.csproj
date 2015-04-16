@@ -62,7 +62,8 @@
     <Compile Include="StudentHomeworks.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SpecializedCourse.cs" />
-    <Compile Include="StudentInCourses.cs" />
+    <Compile Include="StudentCourses.cs" />
+    <Compile Include="StudentLectures.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\EverlastingStudent.Common\EverlastingStudent.Common.csproj">

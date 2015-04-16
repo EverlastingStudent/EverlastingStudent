@@ -88,6 +88,7 @@ app.data = (function () {
         }
 
         freelanceProjects.prototype.allActive = function () {
+            console.log(cradentials.getHeaders());
             var url = this._serviceUrl + "api/FreelanceProjects/allActive";
             return this._ajaxRequester.get(url, { 'Authorization': localStorage.getItem('sessionToken') })
 				.then(function (data) {
@@ -102,6 +103,24 @@ app.data = (function () {
             return this._ajaxRequester.post(url, null, { 'Authorization': localStorage.getItem('sessionToken') })
 				.then(function (data) {
 				    console.log("Freelance project successfully taken.");
+				    return data;
+				});
+        };
+
+        freelanceProjects.prototype.getMyProjects = function () {
+            var url = this._serviceUrl + "api/FreelanceProjects/myProjects/";
+            return this._ajaxRequester.get(url, { 'Authorization': localStorage.getItem('sessionToken') })
+				.then(function (data) {
+				    console.log("My Freelance Projects successfully loaded.");
+				    return data;
+				});
+        };
+
+        freelanceProjects.prototype.workOnMineFreelanceProject = function (id) {
+            var url = this._serviceUrl + "api/FreelanceProjects/work/" + id;
+            return this._ajaxRequester.post(url, null, { 'Authorization': localStorage.getItem('sessionToken') })
+				.then(function (data) {
+				    console.log("Just work on project " + id);
 				    return data;
 				});
         };

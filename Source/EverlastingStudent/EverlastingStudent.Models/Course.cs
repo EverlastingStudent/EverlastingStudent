@@ -7,11 +7,11 @@
 
     public class Course : DeletableEntity
     {
-        private ICollection<StudentInCourses> studentInCourses;
+        private ICollection<StudentCourses> studentCourses;
 
         public Course()
         {
-            this.studentInCourses = new HashSet<StudentInCourses>();
+            this.studentCourses = new HashSet<StudentCourses>();
             this.Lectures = new HashSet<Lecture>();
         }
 
@@ -21,18 +21,16 @@
         [Required]
         public string Title { get; set; }
 
-        public int? NextCourseId { get; set; }
+        public virtual int? NextCourseId { get; set; }
 
-        public Course NextCourse { get; set; }
-
-        public int? ExamId { get; set; }
+        public virtual Course NextCourse { get; set; }
 
         public virtual Exam Exam { get; set; }
 
-        public virtual ICollection<StudentInCourses> StudentInCourses
+        public virtual ICollection<StudentCourses> StudentCourses
         {
-            get { return this.studentInCourses; }
-            set { this.studentInCourses = value; }
+            get { return this.studentCourses; }
+            set { this.studentCourses = value; }
         }
 
         public virtual ICollection<Lecture> Lectures { get; set; }

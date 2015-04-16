@@ -19,56 +19,121 @@ app.controller = (function () {
 
     BaseController.prototype.loadFreelanceProjects = function (selector) {
         var _this = this;
-        _this._data.freelanceProjects.allActive()
-                .then(function (projects) {
-                    var allProjectsContainer = $('<ul>');
-                    for (var projectKey in projects) {
-                        var projectData = {
-                            CloseForTakenDatetime: projects[projectKey].CloseForTakenDatetime,
-                            Content: projects[projectKey].Content,
-                            EnergyCost: projects[projectKey].EnergyCost,
-                            ExperienceGain: projects[projectKey].ExperienceGain,
-                            Id: projects[projectKey].Id,
-                            IsActive: projects[projectKey].IsActive,
-                            MoneyGain: projects[projectKey].MoneyGain,
-                            OpenForTakenDatetime: projects[projectKey].OpenForTakenDatetime,
-                            RequireExperience: projects[projectKey].RequireExperience,
-                            SolveDurabationInHours: projects[projectKey].SolveDurabationInHours,
-                            Title: projects[projectKey].Title,
-                        };
+        var availableProjects = $('<div id="availableFreelanceProjectsCointainer" class="panel panel-default"><h3>Freelance Projects Market</h3></div>').appendTo($(selector));
+        var allProjectsContainer = $('<ul id="allAvailableProjectUl">');
+        availableProjects.append(allProjectsContainer);
+        $('<input>')
+            .attr('id', 'checkProjectsButtonId')
+            .attr('type', 'button')
+            .attr('value', 'Check for Projects')
+            .click('click', function () {
+                _this._data.freelanceProjects.allActive()
+                 .then(function (projects) {
+                     for (var projectKey in projects) {
+                         var projectData = {
+                             CloseForTakenDatetime: projects[projectKey].CloseForTakenDatetime,
+                             Content: projects[projectKey].Content,
+                             EnergyCost: projects[projectKey].EnergyCost,
+                             ExperienceGain: projects[projectKey].ExperienceGain,
+                             Id: projects[projectKey].Id,
+                             IsActive: projects[projectKey].IsActive,
+                             MoneyGain: projects[projectKey].MoneyGain,
+                             OpenForTakenDatetime: projects[projectKey].OpenForTakenDatetime,
+                             RequireExperience: projects[projectKey].RequireExperience,
+                             SolveDurabationInHours: projects[projectKey].SolveDurabationInHours,
+                             Title: projects[projectKey].Title,
+                         };
 
 
-                        //var temlateElem = $(selector).load('./templates/forTake.html');
-                        //console.log(temlateElem.toString());
-                        //var html = Mustache.to_html(temlateElem.toString(), projectData);
+                         //var temlateElem = $(selector).load('./templates/forTake.html');
+                         //console.log(temlateElem.toString());
+                         //var html = Mustache.to_html(temlateElem.toString(), projectData);
 
-                        //$.get('./templates/freelanceProjects/forTake.html', function (template, textStatus, jqXhr) {
-                        //    $(selector).append(Mustache.render($(template).html(), projectData));
-                        //});
+                         //$.get('./templates/freelanceProjects/forTake.html', function (template, textStatus, jqXhr) {
+                         //    $(selector).append(Mustache.render($(template).html(), projectData));
+                         //});
 
-                        var template = "<li><p hidden id='projectId'>{{Id}}</p><h3>{{Title}}</h3><section><p>Info:{{Content}}</p><p>Requiredments:</br><span>Tatal energy cost: {{EnergyCost}}</span></br><span>Experience: {{RequireExperience}}</span></br><span>Solve Durabation: {{SolveDurabationInHours}} hours</span></br><span>Active from: {{OpenForTakenDatetime}}</span></br><span>Closed fot taken at: {{CloseForTakenDatetime}}</span></p><p>Obtainments:</br><span>Experience Gain: {{ExperienceGain}}</span></br><span>Money Gain: {{MoneyGain}}</span></p></section></li>";
-                        var projectElement = $(Mustache.to_html(template, projectData));
+                         var template = "<li><p hidden id='projectId'>{{Id}}</p><h3>{{Title}}</h3><section><p>Info:{{Content}}</p><p><h5>Requiredments:</h5><span>Tatal energy cost: {{EnergyCost}}</span><br /><span>Experience: {{RequireExperience}}</span><br /><span>Solve Durabation: {{SolveDurabationInHours}} hours</span><br /><span>Active from: {{OpenForTakenDatetime}}</span><br /><span>Closed fot taken at: {{CloseForTakenDatetime}}</span><br /></p><p><h5>Obtainments:</h5><span>Experience Gain: {{ExperienceGain}}</span><br /><span>Money Gain: {{MoneyGain}}</span></p></section></li>";
+                         var projectElement = $(Mustache.to_html(template, projectData));
 
-                        // console.log($(projectElement));
-                        // takeButton
-                        $('<input>')
-                            .attr('class', 'takeButton')
-                            .attr('type', 'button')
-                            .attr('value', 'Take Project')
-                            .click('click', function () {
-                                BaseController.prototype.takeFreelanceProject.call(_this, this.parentElement);
-                            })
-                            .appendTo(projectElement.last());
+                         // console.log($(projectElement));
+                         // takeButton
+                         $('<input>')
+                             .attr('class', 'takeButton')
+                             .attr('type', 'button')
+                             .attr('value', 'Take Project')
+                             .click('click', function () {
+                                 BaseController.prototype.takeFreelanceProject.call(_this, this.parentElement);
+                             })
+                             .appendTo(projectElement.last());
 
-                        allProjectsContainer.append(projectElement);
-                    }
+                         allProjectsContainer.append(projectElement);
+                     }
 
-                    $(selector).append(allProjectsContainer);
-                },
-                function (error) {
-                    console.log(error);
-                    // body...
-                });
+                     $('#checkProjectsButtonId').remove();
+                     //$(selector).append(allProjectsContainer);
+                 },
+                 function (error) {
+                     console.log(error);
+                     // body...
+                 });
+            }).appendTo(availableProjects);
+
+        var myProjectsDiv = $('<div id="myFreelanceProjectsCointainer" class="panel panel-default"><h3>My Projects</h3></div>').appendTo($(selector));
+        var myProjectsContainer = $('<ul id="myProjectUl">');
+        myProjectsDiv.append(myProjectsContainer);
+        _this._data.freelanceProjects.getMyProjects()
+                 .then(function (myProjects) {
+                     for (var projectKey in myProjects) {
+                         var myProjectData = {
+                             CloseForTakenDatetime: myProjects[projectKey].CloseForTakenDatetime,
+                             Content: myProjects[projectKey].Content,
+                             EnergyCost: myProjects[projectKey].EnergyCost,
+                             ExperienceGain: myProjects[projectKey].ExperienceGain,
+                             Id: myProjects[projectKey].Id,
+                             IsActive: myProjects[projectKey].IsActive,
+                             MoneyGain: myProjects[projectKey].MoneyGain,
+                             OpenForTakenDatetime: myProjects[projectKey].OpenForTakenDatetime,
+                             RequireExperience: myProjects[projectKey].RequireExperience,
+                             SolveDurabationInHours: myProjects[projectKey].SolveDurabationInHours,
+                             Title: myProjects[projectKey].Title,
+                             FreelanceProjectId: myProjects[projectKey].FreelanceProjectId,
+                             BaseFreelanceProjectId: myProjects[projectKey].BaseFreelanceProjectId,
+                             StudentId: myProjects[projectKey].StudentId,
+                             IsSolved: myProjects[projectKey].IsSolved,
+                             StartDateTime: myProjects[projectKey].StartDateTime,
+                             LastWorkingDateTime: myProjects[projectKey].LastWorkingDateTime,
+                             ProgressInPercentage: myProjects[projectKey].ProgressInPercentage,
+                             WorkPercentage: myProjects[projectKey].WorkPercentage,
+                         };
+
+                         visualizeMyProject(_this, myProjectData, myProjectsContainer);
+                     }
+                 },
+                 function (error) {
+                     console.log(error);
+                     // body...
+                 });
+    };
+
+    var visualizeMyProject = function (currentScope, myProjectData, myProjectsContainer) {
+        var templateMine = "<li><p hidden id='projectId'>{{Id}}</p><h3>{{Title}}<div class=\"progress\"><div class=\"progress-bar progress-bar-success progress-bar-striped\" role=\"progressbar\" aria-valuenow=\"{{ProgressInPercentage}}\" aria-valuemin=\"0\" aria-valuemax=\"100\" style=\"width: {{ProgressInPercentage}}%\"><span class=\"sr-only\">{{ProgressInPercentage}}% Complete (success)</span></div></div></h3><section><p>Info:{{Content}}</p><p><h4>Current progress:</h4><span>Finished: {{IsSolved}}</span><br /><span>Started at: {{StartDateTime}}</span><br /><span>Last worked at: {{LastWorkingDateTime}}</span><br /><span>Work progress: {{WorkPercentage}}</span><br /><span>Total progress: {{ProgressInPercentage}}</span><br /></p><p><h5>Requiredments:</h5><span>Tatal energy cost: {{EnergyCost}}</span><br /><span>Experience: {{RequireExperience}}</span><br /><span>Solve Durabation: {{SolveDurabationInHours}} hours</span><br /><span>Active from: {{OpenForTakenDatetime}}</span><br /><span>Closed fot taken at: {{CloseForTakenDatetime}}</span><br /></p><p><h5>Obtainments:</h5> <br /><span>Experience Gain: {{ExperienceGain}}</span><br /><span>Money Gain: {{MoneyGain}}</span></p></section></li>";
+        var myProjectElement = $(Mustache.to_html(templateMine, myProjectData));
+
+        // console.log($(projectElement));
+        if (!myProjectData.IsSolved) {
+
+            // workButton
+            $('<input>')
+                .attr('class', 'workButton')
+                .attr('type', 'button')
+                .attr('value', 'Work on Project')
+                .click('click', function () {
+                    BaseController.prototype.workOnFreelanceProject.call(currentScope, this.parentElement);//this.parentElement
+                }).appendTo(myProjectElement.first());
+        }
+
+        $(myProjectsContainer).append(myProjectElement.first());
     };
 
     BaseController.prototype.takeFreelanceProject = function (projectElement) {
@@ -80,6 +145,26 @@ app.controller = (function () {
         _this._data.freelanceProjects.takeFreelanceProject(projectId)
                    .then(function (project) {
                        projectElement.remove();
+                       visualizeMyProject(_this, project, $("#myProjectUl"));
+                       console.log(project);
+                   },
+                   function (error) {
+                       console.log(error);
+                       // body...
+                   });
+    };
+
+    BaseController.prototype.workOnFreelanceProject = function (projectElement) {
+        var _this = this;
+
+        //console.log(_this.parentElement.firstChild.innerText);
+        var projectId = parseInt(projectElement.firstChild.innerHTML);
+
+        _this._data.freelanceProjects.workOnMineFreelanceProject(projectId)
+                   .then(function (project) {
+                       var projectsContainer = projectElement.parentElement;
+                       projectElement.remove();
+                       visualizeMyProject(_this, project, projectsContainer);
                        console.log(project);
                    },
                    function (error) {

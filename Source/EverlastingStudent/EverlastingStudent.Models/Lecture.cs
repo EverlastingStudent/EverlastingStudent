@@ -1,13 +1,11 @@
-﻿using EverlastingStudent.Common.Models;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace EverlastingStudent.Models
+﻿namespace EverlastingStudent.Models
 {
+    using System;
+    using System.Collections.Generic;
+    using System.ComponentModel.DataAnnotations;
+
+    using EverlastingStudent.Common.Models;
+
     public class Lecture : DeletableEntity
     {
         [Key]
@@ -18,14 +16,12 @@ namespace EverlastingStudent.Models
 
         public int CourseId { get; set; }
 
-        public Course Course { get; set; }
+        public virtual Course Course { get; set; }
 
         public int DurationInMinutes { get; set; }
 
         public double CoefficientKnowledgeGain { get; set; }
 
-        public int? NextLectureId { get; set; }
-
-        public Lecture NextLecture { get; set; }
+        public virtual ICollection<StudentLectures> StudentLectures { get; set; }
     }
 }
