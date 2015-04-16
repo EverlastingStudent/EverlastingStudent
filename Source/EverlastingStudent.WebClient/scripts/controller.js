@@ -29,102 +29,119 @@ app.controller = (function () {
     };
 
     BaseController.prototype.loadFreelanceProjects = function (selector) {
+        //this._data.Homework.getHomework()
+        //    .then(function (data) {
         var _this = this;
-        var availableProjects = $('<div id="availableFreelanceProjectsCointainer" class="panel panel-default"><h3>Freelance Projects Market</h3></div>').appendTo($(selector));
-        var allProjectsContainer = $('<ul id="allAvailableProjectUl">');
-        availableProjects.append(allProjectsContainer);
-        $('<input>')
-            .attr('id', 'checkProjectsButtonId')
-            .attr('type', 'button')
-            .attr('value', 'Check for Projects')
-            .click('click', function () {
-                _this._data.freelanceProjects.allActive()
-                 .then(function (projects) {
-                     for (var projectKey in projects) {
-                         var projectData = {
-                             CloseForTakenDatetime: projects[projectKey].CloseForTakenDatetime,
-                             Content: projects[projectKey].Content,
-                             EnergyCost: projects[projectKey].EnergyCost,
-                             ExperienceGain: projects[projectKey].ExperienceGain,
-                             Id: projects[projectKey].Id,
-                             IsActive: projects[projectKey].IsActive,
-                             MoneyGain: projects[projectKey].MoneyGain,
-                             OpenForTakenDatetime: projects[projectKey].OpenForTakenDatetime,
-                             RequireExperience: projects[projectKey].RequireExperience,
-                             SolveDurabationInHours: projects[projectKey].SolveDurabationInHours,
-                             Title: projects[projectKey].Title,
-                         };
+        $.get('templates/freelanceProejects.html', function (template) {
+            var output = Mustache.render(template, null);
+
+            //debugger;
+            $(selector).html(output);
+            var availableProjects = $('#availableFreelanceProjectsCointainer');
+           
+            // var availableProjects = $('<div id="availableFreelanceProjectsCointainer" class="panel panel-default"><h3>Freelance Projects Market</h3></div>').appendTo($(selector));
+            var allProjectsContainer = $('<ul id="allAvailableProjectUl">');
+            availableProjects.append(allProjectsContainer);
+            $('<input>')
+                .attr('id', 'checkProjectsButtonId')
+                .attr('type', 'button')
+                .attr('value', 'Check for Projects')
+                .click('click', function () {
+                    _this._data.freelanceProjects.allActive()
+                     .then(function (projects) {
+                         for (var projectKey in projects) {
+                             var projectData = {
+                                 CloseForTakenDatetime: projects[projectKey].CloseForTakenDatetime,
+                                 Content: projects[projectKey].Content,
+                                 EnergyCost: projects[projectKey].EnergyCost,
+                                 ExperienceGain: projects[projectKey].ExperienceGain,
+                                 Id: projects[projectKey].Id,
+                                 IsActive: projects[projectKey].IsActive,
+                                 MoneyGain: projects[projectKey].MoneyGain,
+                                 OpenForTakenDatetime: projects[projectKey].OpenForTakenDatetime,
+                                 RequireExperience: projects[projectKey].RequireExperience,
+                                 SolveDurabationInHours: projects[projectKey].SolveDurabationInHours,
+                                 Title: projects[projectKey].Title,
+                             };
 
 
-                         //var temlateElem = $(selector).load('./templates/forTake.html');
-                         //console.log(temlateElem.toString());
-                         //var html = Mustache.to_html(temlateElem.toString(), projectData);
+                             //var temlateElem = $(selector).load('./templates/forTake.html');
+                             //console.log(temlateElem.toString());
+                             //var html = Mustache.to_html(temlateElem.toString(), projectData);
 
-                         //$.get('./templates/freelanceProjects/forTake.html', function (template, textStatus, jqXhr) {
-                         //    $(selector).append(Mustache.render($(template).html(), projectData));
-                         //});
+                             //$.get('./templates/freelanceProjects/forTake.html', function (template, textStatus, jqXhr) {
+                             //    $(selector).append(Mustache.render($(template).html(), projectData));
+                             //});
 
-                         var template = "<li><p hidden id='projectId'>{{Id}}</p><h3>{{Title}}</h3><section><p>Info:{{Content}}</p><p><h5>Requiredments:</h5><span>Tatal energy cost: {{EnergyCost}}</span><br /><span>Experience: {{RequireExperience}}</span><br /><span>Solve Durabation: {{SolveDurabationInHours}} hours</span><br /><span>Active from: {{OpenForTakenDatetime}}</span><br /><span>Closed fot taken at: {{CloseForTakenDatetime}}</span><br /></p><p><h5>Obtainments:</h5><span>Experience Gain: {{ExperienceGain}}</span><br /><span>Money Gain: {{MoneyGain}}</span></p></section></li>";
-                         var projectElement = $(Mustache.to_html(template, projectData));
+                             var template = "<li><p hidden id='projectId'>{{Id}}</p><h3>{{Title}}</h3><section><p>Info:{{Content}}</p><p><h5>Requiredments:</h5><span>Tatal energy cost: {{EnergyCost}}</span><br /><span>Experience: {{RequireExperience}}</span><br /><span>Solve Durabation: {{SolveDurabationInHours}} hours</span><br /><span>Active from: {{OpenForTakenDatetime}}</span><br /><span>Closed fot taken at: {{CloseForTakenDatetime}}</span><br /></p><p><h5>Obtainments:</h5><span>Experience Gain: {{ExperienceGain}}</span><br /><span>Money Gain: {{MoneyGain}}</span></p></section></li>";
+                             var projectElement = $(Mustache.to_html(template, projectData));
 
-                         // console.log($(projectElement));
-                         // takeButton
-                         $('<input>')
-                             .attr('class', 'takeButton')
-                             .attr('type', 'button')
-                             .attr('value', 'Take Project')
-                             .click('click', function () {
-                                 BaseController.prototype.takeFreelanceProject.call(_this, this.parentElement);
-                             })
-                             .appendTo(projectElement.last());
+                             // console.log($(projectElement));
+                             // takeButton
+                             $('<input>')
+                                 .attr('class', 'takeButton')
+                                 .attr('type', 'button')
+                                 .attr('value', 'Take Project')
+                                 .click('click', function () {
+                                     BaseController.prototype.takeFreelanceProject.call(_this, this.parentElement);
+                                 })
+                                 .appendTo(projectElement.last());
 
-                         allProjectsContainer.append(projectElement);
-                     }
+                             allProjectsContainer.append(projectElement);
+                         }
 
-                     $('#checkProjectsButtonId').remove();
-                     //$(selector).append(allProjectsContainer);
-                 },
-                 function (error) {
-                     console.log(error);
-                     // body...
-                 });
-            }).appendTo(availableProjects);
+                         $('#checkProjectsButtonId').remove();
+                         //$(selector).append(allProjectsContainer);
+                     },
+                     function (error) {
+                         console.log(error);
+                         alert(error.responseJSON['Message']);
+                         // body...
+                     });
+                }).appendTo(availableProjects);
 
-        var myProjectsDiv = $('<div id="myFreelanceProjectsCointainer" class="panel panel-default"><h3>My Projects</h3></div>').appendTo($(selector));
-        var myProjectsContainer = $('<ul id="myProjectUl">');
-        myProjectsDiv.append(myProjectsContainer);
-        _this._data.freelanceProjects.getMyProjects()
-                 .then(function (myProjects) {
-                     for (var projectKey in myProjects) {
-                         var myProjectData = {
-                             CloseForTakenDatetime: myProjects[projectKey].CloseForTakenDatetime,
-                             Content: myProjects[projectKey].Content,
-                             EnergyCost: myProjects[projectKey].EnergyCost,
-                             ExperienceGain: myProjects[projectKey].ExperienceGain,
-                             Id: myProjects[projectKey].Id,
-                             IsActive: myProjects[projectKey].IsActive,
-                             MoneyGain: myProjects[projectKey].MoneyGain,
-                             OpenForTakenDatetime: myProjects[projectKey].OpenForTakenDatetime,
-                             RequireExperience: myProjects[projectKey].RequireExperience,
-                             SolveDurabationInHours: myProjects[projectKey].SolveDurabationInHours,
-                             Title: myProjects[projectKey].Title,
-                             FreelanceProjectId: myProjects[projectKey].FreelanceProjectId,
-                             BaseFreelanceProjectId: myProjects[projectKey].BaseFreelanceProjectId,
-                             StudentId: myProjects[projectKey].StudentId,
-                             IsSolved: myProjects[projectKey].IsSolved,
-                             StartDateTime: myProjects[projectKey].StartDateTime,
-                             LastWorkingDateTime: myProjects[projectKey].LastWorkingDateTime,
-                             ProgressInPercentage: myProjects[projectKey].ProgressInPercentage,
-                             WorkPercentage: myProjects[projectKey].WorkPercentage,
-                         };
 
-                         visualizeMyProject(_this, myProjectData, myProjectsContainer);
-                     }
-                 },
-                 function (error) {
-                     console.log(error);
-                     // body...
-                 });
+            var myProjectsDiv = $('#myProjectsDiv');
+
+            // var myProjectsDiv = $('<div id="myFreelanceProjectsCointainer" class="panel panel-default"><h3>My Projects</h3></div>').appendTo($(selector));
+            var myProjectsContainer = $('<ul id="myProjectUl">');
+            myProjectsDiv.append(myProjectsContainer);
+            _this._data.freelanceProjects.getMyProjects()
+                     .then(function (myProjects) {
+                         for (var projectKey in myProjects) {
+                             var myProjectData = {
+                                 CloseForTakenDatetime: myProjects[projectKey].CloseForTakenDatetime,
+                                 Content: myProjects[projectKey].Content,
+                                 EnergyCost: myProjects[projectKey].EnergyCost,
+                                 ExperienceGain: myProjects[projectKey].ExperienceGain,
+                                 Id: myProjects[projectKey].Id,
+                                 IsActive: myProjects[projectKey].IsActive,
+                                 MoneyGain: myProjects[projectKey].MoneyGain,
+                                 OpenForTakenDatetime: myProjects[projectKey].OpenForTakenDatetime,
+                                 RequireExperience: myProjects[projectKey].RequireExperience,
+                                 SolveDurabationInHours: myProjects[projectKey].SolveDurabationInHours,
+                                 Title: myProjects[projectKey].Title,
+                                 FreelanceProjectId: myProjects[projectKey].FreelanceProjectId,
+                                 BaseFreelanceProjectId: myProjects[projectKey].BaseFreelanceProjectId,
+                                 StudentId: myProjects[projectKey].StudentId,
+                                 IsSolved: myProjects[projectKey].IsSolved,
+                                 StartDateTime: myProjects[projectKey].StartDateTime,
+                                 LastWorkingDateTime: myProjects[projectKey].LastWorkingDateTime,
+                                 ProgressInPercentage: myProjects[projectKey].ProgressInPercentage,
+                                 WorkPercentage: myProjects[projectKey].WorkPercentage,
+                             };
+
+                             visualizeMyProject(_this, myProjectData, myProjectsContainer);
+                         }
+                     },
+                     function (error) {
+                         console.log(error.responseJSON.message);
+                         alert(error.responseJSON['Message']);
+                         // body...
+                     });
+            //});
+        });
+
     };
 
     var visualizeMyProject = function (currentScope, myProjectData, myProjectsContainer) {
@@ -160,6 +177,7 @@ app.controller = (function () {
                        console.log(project);
                    },
                    function (error) {
+                       alert(error.responseJSON['Message']);
                        console.log(error);
                        // body...
                    });
@@ -179,6 +197,7 @@ app.controller = (function () {
                        console.log(project);
                    },
                    function (error) {
+                       alert(error.responseJSON['Message']);
                        console.log(error);
                        // body...
                    });
@@ -224,6 +243,7 @@ app.controller = (function () {
                     $(selector).append(drinksContainer);
                 },
                 function (error) {
+                    alert(error.responseJSON['Message']);
                     console.log(error);
                     // body...
                 });
@@ -269,6 +289,7 @@ app.controller = (function () {
                     $(selector).append(hardwareContainer);
                 },
                 function (error) {
+                    alert(error.responseJSON['Message']);
                     console.log(error);
                     // body...
                 });
@@ -286,6 +307,7 @@ app.controller = (function () {
                        console.log(drink);
                    },
                    function (error) {
+                       alert(error.responseJSON['Message']);
                        console.log(error);
                        // body...
                    });
@@ -303,6 +325,7 @@ app.controller = (function () {
                        console.log(drink);
                    },
                    function (error) {
+                       alert(error.responseJSON['Message']);
                        console.log(error);
                        // body...
                    });
@@ -320,6 +343,7 @@ app.controller = (function () {
                        console.log(hardware);
                    },
                    function (error) {
+                       alert(error.responseJSON['Message']);
                        console.log(error);
                        // body...
                    });
@@ -337,6 +361,7 @@ app.controller = (function () {
                        console.log(hardware);
                    },
                    function (error) {
+                       alert(error.responseJSON['Message']);
                        console.log(error);
                        // body...
                    });
@@ -361,6 +386,7 @@ app.controller = (function () {
 				},
 				function (error) {
 				    // body...
+				    alert(error.responseJSON['Message']);
 				});
         });
     };
@@ -378,6 +404,7 @@ app.controller = (function () {
 				},
 				function (error) {
 				    // body...
+				    alert(error.responseJSON['Message']);
 				});
         });
     };
