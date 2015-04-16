@@ -4,15 +4,17 @@ app.data = (function () {
     function Data(baseUrl, ajaxRequester) {
         this.users = new Users(baseUrl, ajaxRequester);
         this.freelanceProjects = new freelanceProjects(baseUrl, ajaxRequester);
+
+        this.Homework = new Homework(baseUrl, ajaxRequester)
     }
 
-    var cradentials = (function () {
+    var credentials = (function () {
         var headers = {
             'Authorization': getSessionToken()
         }
 
         function getSessionToken() {
-            localStorage.getItem('sessionToken');
+            return localStorage.getItem('sessionToken');
         }
 
         function setSessionToken(sessionToken) {
@@ -44,7 +46,7 @@ app.data = (function () {
         function Users(baseUrl, ajaxRequester) {
             this._serviceUrl = baseUrl;
             this._ajaxRequester = ajaxRequester;
-            this._headers = cradentials.getHeaders();
+            this._headers = credentials.getHeaders();
         }
 
         Users.prototype.login = function (username, password) {
@@ -52,8 +54,8 @@ app.data = (function () {
             var data = { 'userName': username, 'Password': password, 'grant_type': 'password' }
             return this._ajaxRequester.post(url, data, this._headers)
 				.then(function (data) {
-				    cradentials.setSessionToken(data.access_token);
-				    cradentials.setUsername(data.userName);
+				    credentials.setSessionToken(data.access_token);
+				    credentials.setUsername(data.userName);
 				    return data;
 				});
         };
@@ -68,7 +70,7 @@ app.data = (function () {
             var url = this._serviceUrl + 'api/Account/Register';
             return this._ajaxRequester.post(url, user, this._headers)
 				.then(function (data) {
-				    cradentials.setSessionToken(data.sessionToken);
+				    credentials.setSessionToken(data.sessionToken);
 				    return data;
 				});
         };
@@ -80,15 +82,33 @@ app.data = (function () {
         return Users;
     }());
 
+    var Homework = (function (argument) {
+        function Homework(baseUrl, ajaxRequester) {
+            this._serviceUrl = baseUrl + 'api/Homeworks';
+            this._ajaxRequester = ajaxRequester;
+            this._headers = credentials.getHeaders();
+        }
+
+        Homework.prototype.getHomework = function () {
+            return this._ajaxRequester.get(this._serviceUrl + '/GetHomeworks', this._headers);
+        }
+
+        Homework.prototype.add = function (bookmark) {
+            return this._ajaxRequester.post(this._serviceUrl, bookmark, this._headers);
+        }
+
+        return Homework;
+    }());
+
     var freelanceProjects = (function (argument) {
         function freelanceProjects(baseUrl, ajaxRequester) {
             this._serviceUrl = baseUrl;
             this._ajaxRequester = ajaxRequester;
-            this._headers = cradentials.getHeaders();
+            this._headers = credentials.getHeaders();
         }
 
         freelanceProjects.prototype.allActive = function () {
-            console.log(cradentials.getHeaders());
+            console.log(credentials.getHeaders());
             var url = this._serviceUrl + "api/FreelanceProjects/allActive";
             return this._ajaxRequester.get(url, { 'Authorization': localStorage.getItem('sessionToken') })
 				.then(function (data) {
@@ -132,7 +152,7 @@ app.data = (function () {
             function Drinks(baseUrl, ajaxRequester) {
                 this._serviceUrl = baseUrl;
                 this._ajaxRequester = ajaxRequester;
-                this._headers = cradentials.getHeaders();
+                this._headers = credentials.getHeaders();
             }
 
             Drinks.prototype.names = function () {
@@ -170,7 +190,7 @@ app.data = (function () {
                     function hardwareParts(baseUrl, ajaxRequester) {
                         this._serviceUrl = baseUrl;
                         this._ajaxRequester = ajaxRequester;
-                        this._headers = cradentials.getHeaders();
+                        this._headers = credentials.getHeaders();
                     }
 
                     hardwareParts.prototype.names = function () {

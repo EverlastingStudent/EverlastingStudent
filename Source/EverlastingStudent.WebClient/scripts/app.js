@@ -24,8 +24,11 @@ var app = app || {};
 
         this.get('#/register', function() {
             controller.loadRegister(selector);
-        }); 
+        });
 
+        this.get('#/homework', function() {
+            controller.loadHomework(selector);
+        });
 
         this.get('#/Freelance-projects', function () {
             controller.loadFreelanceProjects(selector);

@@ -1,0 +1,33 @@
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-3 sidebar">
+            <button class="btn btn-warning btn-block">Homework</button>
+
+            <button class="btn btn-warning btn-block">Freelance Projects</button>
+
+            <button class="btn btn-warning btn-block">Exams</button>
+
+            <button class="btn btn-warning btn-block">Lectures</button>
+
+            <button class="btn btn-warning btn-block">Courses</button>
+
+            <button class="btn btn-warning btn-block">Shop</button>
+
+        </div>
+        <div class="col-md-9 action">
+            {{#.}}
+            <li>
+                <p hidden id='homeworkId'>{{Id}}</p>
+                <h3>{{Title}}</h3>
+                <section>
+                    <p>EnergyCost:{{EnergyCost}}</p>
+                    <p>KnowledgeGain: {{KnowledgeGain}}</p>
+                    <p>ExperienceGain: {{ExperienceGain}}</p>
+                    <p>Minutes need for solving {{SolveDurabationInMinutes}}</p>
+                </section>
+            </li>
+            <button class="btn btn-danger btn-lg">Solve</button>
+            {{/.}}
+        </div>
+    </div>
+</div>

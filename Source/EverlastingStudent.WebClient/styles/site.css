@@ -88,3 +88,13 @@ div.jumbotron {
         padding: 10px;
         margin: 10px;
     }
+
+.sidebar {
+    padding: 20px;
+    border-right: 3px solid #234465;
+    height: 700px;
+}
+
+.btn {
+    margin: 20px 5px 20px 5px;
+}

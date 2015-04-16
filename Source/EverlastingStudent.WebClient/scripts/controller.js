@@ -17,6 +17,17 @@ app.controller = (function () {
         $(selector).load('./templates/register.html');
     };
 
+    BaseController.prototype.loadHomework = function (selector) {
+        this._data.Homework.getHomework()
+            .then(function (data) {
+                $.get('templates/homework.html', function (template) {
+                    var output = Mustache.render(template, data);
+                    debugger;
+                    $(selector).html(output);
+                })
+            })
+    };
+
     BaseController.prototype.loadFreelanceProjects = function (selector) {
         var _this = this;
         var availableProjects = $('<div id="availableFreelanceProjectsCointainer" class="panel panel-default"><h3>Freelance Projects Market</h3></div>').appendTo($(selector));
