@@ -41,6 +41,11 @@ var app = app || {};
         this.get('#/hardware', function () {
             controller.loadHardwareParts(selector);
         });
+
+		this.get('#/timer/:duration', function() {
+			var duration = this.params['duration']
+			controller.loadTimer(selector, duration);
+		});
     });
 
     app.router.run('#/');

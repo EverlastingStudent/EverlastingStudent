@@ -10,8 +10,14 @@ app.controller = (function () {
     };
 
     BaseController.prototype.loadLogin = function (selector) {
-        $(selector).load('./templates/login.html');
-    };
+		$(selector).load('./templates/login.html');
+	};
+
+	BaseController.prototype.loadTimer = function (selector, duration) {
+		debugger;
+		$(selector).load('./templates/timer.html');
+		startTimer(duration, $('#time'));
+	};
 
     BaseController.prototype.loadRegister = function (selector) {
         $(selector).load('./templates/register.html');
@@ -346,6 +352,7 @@ app.controller = (function () {
         var selector = '#wrapper';
         attachLoginHandler.call(this, selector);
         attachRegisterHandler.call(this, selector);
+		attachSolveHomeworkHandler.call(this, selector)
     };
 
     var attachLoginHandler = function (selector) {
@@ -381,6 +388,22 @@ app.controller = (function () {
 				});
         });
     };
+
+	var attachSolveHomeworkHandler = function (selector) {
+		var _this = this;
+		debugger;
+		$(selector).on('click', '.solve-homework', function (ev) {
+			var homeworkId = ev.target.id;
+			_this._data.Homework.solve(homeworkId)
+				.then(function (data) {
+					alert(data);
+				},
+				function (error) {
+					debugger;
+					alert(error.responseJSON['Message']);
+				});
+		});
+	};
 
     return {
         get: function (data) {

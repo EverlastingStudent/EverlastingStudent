@@ -91,11 +91,11 @@ app.data = (function () {
 
         Homework.prototype.getHomework = function () {
             return this._ajaxRequester.get(this._serviceUrl + '/GetHomeworks', this._headers);
-        }
+        };
 
-        Homework.prototype.add = function (bookmark) {
-            return this._ajaxRequester.post(this._serviceUrl, bookmark, this._headers);
-        }
+        Homework.prototype.solve = function (homeworkId) {
+            return this._ajaxRequester.post(this._serviceUrl + '/solve/' + homeworkId, homeworkId, this._headers);
+        };
 
         return Homework;
     }());

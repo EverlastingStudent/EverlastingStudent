@@ -1,23 +1,22 @@
 <div class="container-fluid">
-    <div class="row">
-        <div class="col-md-3 sidebar">
-            <button class="btn btn-warning btn-block">Homework</button>
+        <div class="row">
+            <div class="col-md-3 sidebar">
+                <a href="#/homework" class="btn btn-warning btn-block">Homework</a>
 
-            <button class="btn btn-warning btn-block">Freelance Projects</button>
+                <a href="#/freelance-projects" class="btn btn-warning btn-block">Freelance Projects</a>
 
-            <button class="btn btn-warning btn-block">Exams</button>
+                <a href="#/exams" class="btn btn-warning btn-block">Exams</a>
 
-            <button class="btn btn-warning btn-block">Lectures</button>
+                <a href="#/lectures" class="btn btn-warning btn-block">Lectures</a>
 
-            <button class="btn btn-warning btn-block">Courses</button>
+                <a href="#/courses" class="btn btn-warning btn-block">Courses</a>
 
-            <button class="btn btn-warning btn-block">Shop</button>
+                <a href="#/shop" class="btn btn-warning btn-block">Shop</a>
 
-        </div>
+            </div>
         <div class="col-md-9 action">
             {{#.}}
             <li>
-                <p hidden id='homeworkId'>{{Id}}</p>
                 <h3>{{Title}}</h3>
                 <section>
                     <p>EnergyCost:{{EnergyCost}}</p>
@@ -26,7 +25,7 @@
                     <p>Minutes need for solving {{SolveDurabationInMinutes}}</p>
                 </section>
             </li>
-            <button class="btn btn-danger btn-lg">Solve</button>
+            <button id="{{Id}}" class="btn btn-danger btn-lg solve-homework">Solve</button>
             {{/.}}
         </div>
     </div>
