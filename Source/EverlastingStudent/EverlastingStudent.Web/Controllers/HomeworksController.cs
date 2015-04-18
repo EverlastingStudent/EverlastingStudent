@@ -66,7 +66,20 @@
                 .To<GetHomeworksDto>()
                 .ToList();
 
-            return this.Ok(homeworkskDto);
+            var studentWithHomeworks = new StudentWithAction<GetHomeworksDto>
+                {
+                    Action = homeworkskDto,
+                    CourseName = this.UserProfile.StudentCourses
+                        .Where(x => x.IsActive)
+                        .Select(x => x.Course.Title)
+                        .FirstOrDefault(),
+                    Energy = this.UserProfile.Energy,
+                    Experience = this.UserProfile.Experience,
+                    Knowledge = this.UserProfile.Knowledge,
+                    Money = this.UserProfile.Money
+                };
+
+            return this.Ok(studentWithHomeworks);
         }
 
         [HttpPost]
