@@ -19,7 +19,6 @@ var app = app || {};
 
         this.get('#/login/', function() {
             app.sammy.setLocation('#/home/');
-            app.view.homeView();
         });
 
         this.get('#/register', function() {

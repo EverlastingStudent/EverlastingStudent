@@ -388,6 +388,7 @@ app.controller = (function () {
             _this._data.users.login(username, password)
 				.then(function (data) {
 				    console.log("Logged in successfully");
+					app.sammy.setLocation('#/homework');
 				    // redirect
 				    //app.router.setLocation('#/Freelance-projects');
 				},
